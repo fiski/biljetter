@@ -6,14 +6,14 @@ A Swedish concert/event calendar application inspired by a clean, minimal design
 
 **Target Audience**: Swedish music fans looking for concerts in their city (Göteborg focus)
 **Primary Language**: Swedish (UI text)
-**Reference Design**: Screenshots provided show November 2021 calendar with events
+**Reference Design**: Screenshots provided show calendar with events (mock data uses dynamic current-month dates)
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Calendar Library**: react-big-calendar ^1.11.0
 - **Date Library**: Day.js ^1.11.0
@@ -706,80 +706,12 @@ export const mockArtists: Artist[] = [
   // Add more as needed
 ]
 
-// Sample events
-export const mockEvents: EventWithRelations[] = [
-  {
-    id: 'e1',
-    title: 'Viper!!',
-    slug: 'viper-2021-11-05',
-    startTime: new Date(2021, 10, 5, 0, 1),  // November 5, 2021, 00:01
-    endTime: new Date(2021, 10, 5, 12, 30),
-    venueId: 'v3',
-    venue: mockVenues[2], // The universe
-    artistIds: ['a1'],
-    artists: [mockArtists[0]],
-    genreIds: ['g2'],
-    genres: [mockGenres[1]], // Electronic
-    status: 'past',
-    spotifyListeners: 123087,
-    price: '150 kr',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'e2',
-    title: 'Blazers',
-    slug: 'blazers-2021-11-04',
-    startTime: new Date(2021, 10, 4, 3, 40),  // November 4, 2021, 03:40
-    endTime: new Date(2021, 10, 4, 6, 38),
-    venueId: 'v4',
-    venue: mockVenues[3], // Haga lekplats
-    artistIds: ['a2'],
-    artists: [mockArtists[1]],
-    genreIds: ['g1'],
-    genres: [mockGenres[0]], // Rock
-    status: 'past',
-    price: '100 kr',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'e3',
-    title: 'Sheep boi',
-    slug: 'sheep-boi-2021-11-04',
-    startTime: new Date(2021, 10, 4, 19, 0),
-    endTime: new Date(2021, 10, 4, 21, 0),
-    venueId: 'v5',
-    venue: mockVenues[4], // Farm
-    artistIds: ['a3'],
-    artists: [mockArtists[2]],
-    genreIds: ['g4'],
-    genres: [mockGenres[3]], // Indie
-    status: 'past',
-    price: '80 kr',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'e4',
-    title: 'Front 242',
-    slug: 'front-242-2021-11-02',
-    startTime: new Date(2021, 10, 2, 19, 0),
-    endTime: new Date(2021, 10, 2, 21, 0),
-    venueId: 'v1',
-    venue: mockVenues[0], // Pustervik
-    artistIds: ['a4'],
-    artists: [mockArtists[3]],
-    genreIds: ['g2'],
-    genres: [mockGenres[1]], // Electronic
-    status: 'past',
-    spotifyListeners: 150000,
-    price: '200 kr',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-  // Add 16-26 more events to populate the calendar
-]
+// Events use dynamic dates relative to current month
+// Helper: const now = new Date(); const year = now.getFullYear(); const month = now.getMonth();
+// Previous month events: new Date(year, month - 1, day, hour, min) → status: 'past'
+// Current month events: new Date(year, month, day, hour, min) → status: 'past' or 'upcoming'
+// Next month events: new Date(year, month + 1, day, hour, min) → status: 'upcoming'
+// See lib/data/mockEvents.ts for full implementation
 ```
 
 ---
@@ -1004,7 +936,7 @@ export async function GET(request: NextRequest) {
 
 ```bash
 # Create Next.js app
-npx create-next-app@latest concert-calendar --typescript --tailwind --app
+npx create-next-app@15 biljetter --typescript --tailwind --app --eslint --use-npm --import-alias "@/*"
 
 # Install dependencies
 cd concert-calendar
