@@ -32,14 +32,12 @@ function getCalendarDays(year: number, month: number): CalendarDay[] {
     })
   }
 
-  const remaining = 7 - (days.length % 7)
-  if (remaining < 7) {
-    for (let d = 1; d <= remaining; d++) {
-      days.push({
-        date: new Date(year, month + 1, d),
-        isCurrentMonth: false,
-      })
-    }
+  let nextDay = 1
+  while (days.length < 42) {
+    days.push({
+      date: new Date(year, month + 1, nextDay++),
+      isCurrentMonth: false,
+    })
   }
 
   return days
@@ -69,12 +67,13 @@ function WeekSeparator() {
 
 interface CalendarGridProps {
   events: EventWithRelations[]
+  currentMonth: Date
   onSelectEvent?: (event: EventWithRelations) => void
 }
 
-export function CalendarGrid({ events, onSelectEvent }: CalendarGridProps) {
+export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGridProps) {
   const now = new Date()
-  const calendarDays = getCalendarDays(now.getFullYear(), now.getMonth())
+  const calendarDays = getCalendarDays(currentMonth.getFullYear(), currentMonth.getMonth())
 
   const eventsByDate = new Map<string, EventWithRelations[]>()
   for (const event of events) {

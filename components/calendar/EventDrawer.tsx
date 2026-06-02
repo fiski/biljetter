@@ -25,6 +25,8 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
   const start = new Date(event.startTime)
   const end = new Date(event.endTime)
   const listeners = artist?.spotifyListeners ?? event.spotifyListeners
+  const spotifyHref = artist?.socialLinks?.spotify
+    ?? (artist?.spotifyId ? `https://open.spotify.com/artist/${artist.spotifyId}` : 'https://open.spotify.com')
   const description =
     event.description ??
     'En kväll fylld av musik och energi – ett liveframträdande du sent ska glömma. Artisten bjuder på ett varierat set med låtar från hela karriären, varvat med nya spår och improviserade moment som gör varje konsert unik.'
@@ -92,7 +94,12 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
 
         {/* Spotify + Biljetter */}
         <div className="flex items-center justify-between mb-12">
-          <button className="flex items-center gap-2 text-[#0f0f0f] hover:opacity-70 transition-opacity">
+          <a
+            href={spotifyHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-[#0f0f0f] hover:opacity-70 transition-opacity"
+          >
             <SpotifyIcon />
             <span
               className="text-[14px]"
@@ -100,9 +107,11 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
             >
               Lyssna med Spotify
             </span>
-          </button>
+          </a>
           <a
             href={event.ticketUrl ?? '#'}
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-[#0f0f0f] text-[#f9f7f1] px-[42px] py-[11px] hover:opacity-80 transition-opacity"
           >
             <span
@@ -132,6 +141,8 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
         <div className="clear-both mb-12">
           <a
             href={event.ticketUrl ?? '#'}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block border border-[#0f0f0f] px-[42px] py-[11px] hover:bg-[#0f0f0f] hover:text-[#f9f7f1] transition-colors group"
           >
             <span

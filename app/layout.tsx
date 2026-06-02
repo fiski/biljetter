@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Crimson_Text, IBM_Plex_Mono, Inter, Montserrat, Spectral } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -65,7 +66,7 @@ export default function RootLayout({
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${ibmPlexMono.variable} ${inter.variable} ${montserrat.variable} ${spectral.variable} ${crimsonText.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

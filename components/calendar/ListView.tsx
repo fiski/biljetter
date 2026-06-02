@@ -26,13 +26,18 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
   const end = new Date(event.endTime)
   const listeners = artist?.spotifyListeners ?? event.spotifyListeners
 
+  const spotifyHref = artist?.socialLinks?.spotify
+    ?? (artist?.spotifyId ? `https://open.spotify.com/artist/${artist.spotifyId}` : 'https://open.spotify.com')
+
   return (
-    <div
-      className={`flex gap-6 items-start ${onSelectEvent ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-      onClick={() => onSelectEvent?.(event)}
-    >
-      {/* Artist image */}
-      <div className="shrink-0 w-[409px] h-[316px] overflow-hidden bg-foreground-secondary/10">
+    <div className="flex gap-6 items-start">
+      {/* Artist image — click to open detail */}
+      <button
+        type="button"
+        className={`shrink-0 w-[409px] h-[316px] overflow-hidden bg-foreground-secondary/10 ${onSelectEvent ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+        onClick={() => onSelectEvent?.(event)}
+        aria-label={`Visa detaljer för ${artist?.name ?? event.title}`}
+      >
         {artist?.imageUrl && (
           <img
             src={artist.imageUrl}
@@ -40,7 +45,7 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
             className="w-full h-full object-cover"
           />
         )}
-      </div>
+      </button>
 
       {/* Event details */}
       <div className="flex-1 min-w-0 flex items-end justify-between" style={{ minHeight: '316px' }}>
@@ -60,12 +65,17 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
                   <p className="text-[16px] text-foreground">Lyssnare per månad</p>
                 </div>
               )}
-              <div className="flex gap-2 items-center text-foreground">
+              <a
+                href={spotifyHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-2 items-center text-foreground hover:opacity-70 transition-opacity"
+              >
                 <SpotifyIcon />
                 <p className="text-[14px]" style={{ fontFamily: 'var(--font-spectral)' }}>
                   Lyssna med Spotify
                 </p>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -89,6 +99,8 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
         {/* Biljetter button */}
         <a
           href={event.ticketUrl ?? '#'}
+          target="_blank"
+          rel="noopener noreferrer"
           className="border border-foreground px-[42px] py-[11px] self-end shrink-0 hover:bg-foreground hover:text-background transition-colors"
         >
           <span

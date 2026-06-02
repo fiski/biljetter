@@ -19,10 +19,14 @@ function ArrowRight() {
   )
 }
 
-export function MonthHeader() {
-  const now = new Date()
-  const monthName = SWEDISH_MONTHS[now.getMonth()]
-  const year = now.getFullYear()
+interface MonthHeaderProps {
+  currentMonth: Date
+  onNavigate: (direction: 'prev' | 'next') => void
+}
+
+export function MonthHeader({ currentMonth, onNavigate }: MonthHeaderProps) {
+  const monthName = SWEDISH_MONTHS[currentMonth.getMonth()]
+  const year = currentMonth.getFullYear()
 
   return (
     <div className="flex items-center justify-center gap-6 py-8">
@@ -30,6 +34,7 @@ export function MonthHeader() {
         type="button"
         className="text-foreground hover:text-accent transition-colors"
         aria-label="Föregående månad"
+        onClick={() => onNavigate('prev')}
       >
         <ArrowLeft />
       </button>
@@ -51,6 +56,7 @@ export function MonthHeader() {
         type="button"
         className="text-foreground hover:text-accent transition-colors"
         aria-label="Nästa månad"
+        onClick={() => onNavigate('next')}
       >
         <ArrowRight />
       </button>
