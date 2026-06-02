@@ -11,6 +11,7 @@ interface FilterStore {
   navigateMonth: (direction: 'prev' | 'next') => void
   setGenre: (slug: string) => void
   setVenue: (slug: string) => void
+  resetToToday: () => void
   resetFilters: () => void
 }
 
@@ -31,6 +32,7 @@ export const useFilterStore = create<FilterStore>()(
           return { currentMonthMs: next.getTime() }
         }),
 
+      resetToToday: () => set({ currentMonthMs: initialMonthMs }),
       setGenre: (slug) => set({ selectedGenre: slug }),
       setVenue: (slug) => set({ selectedVenue: slug }),
       resetFilters: () => set({ selectedGenre: '', selectedVenue: '' }),

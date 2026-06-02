@@ -30,8 +30,18 @@ export function CalendarWrapper() {
 
   const handleClose = useCallback(() => setIsDrawerOpen(false), [])
 
-  const { currentMonthMs, selectedGenre, selectedVenue, navigateMonth, setGenre, setVenue } =
+  const { currentMonthMs, selectedGenre, selectedVenue, navigateMonth, resetToToday, setGenre, setVenue } =
     useFilterStore()
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (selectedEvent) return
+      if (e.key === 'ArrowLeft') navigateMonth('prev')
+      if (e.key === 'ArrowRight') navigateMonth('next')
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [selectedEvent, navigateMonth])
 
   const currentMonth = new Date(currentMonthMs)
 
@@ -48,7 +58,7 @@ export function CalendarWrapper() {
   return (
     <>
       {/* Calendar — always rendered so it's visible under the drawer */}
-      <MonthHeader currentMonth={currentMonth} onNavigate={navigateMonth} />
+      <MonthHeader currentMonth={currentMonth} onNavigate={navigateMonth} onResetToToday={resetToToday} />
 
       <div className="flex items-end justify-between mb-6">
         <FilterBar

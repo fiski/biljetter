@@ -22,9 +22,10 @@ function ArrowRight() {
 interface MonthHeaderProps {
   currentMonth: Date
   onNavigate: (direction: 'prev' | 'next') => void
+  onResetToToday: () => void
 }
 
-export function MonthHeader({ currentMonth, onNavigate }: MonthHeaderProps) {
+export function MonthHeader({ currentMonth, onNavigate, onResetToToday }: MonthHeaderProps) {
   const monthName = SWEDISH_MONTHS[currentMonth.getMonth()]
   const year = currentMonth.getFullYear()
 
@@ -32,7 +33,7 @@ export function MonthHeader({ currentMonth, onNavigate }: MonthHeaderProps) {
     <div className="flex items-center justify-center gap-6 py-8">
       <button
         type="button"
-        className="text-foreground hover:text-accent transition-colors"
+        className="p-3 -m-3 text-foreground hover:text-accent hover:bg-foreground/8 active:bg-foreground/15 rounded transition-colors"
         aria-label="Föregående månad"
         onClick={() => onNavigate('prev')}
       >
@@ -54,11 +55,20 @@ export function MonthHeader({ currentMonth, onNavigate }: MonthHeaderProps) {
 
       <button
         type="button"
-        className="text-foreground hover:text-accent transition-colors"
+        className="p-3 -m-3 text-foreground hover:text-accent hover:bg-foreground/8 active:bg-foreground/15 rounded transition-colors"
         aria-label="Nästa månad"
         onClick={() => onNavigate('next')}
       >
         <ArrowRight />
+      </button>
+
+      <button
+        type="button"
+        onClick={onResetToToday}
+        className="ml-4 px-3 py-1 text-[11px] tracking-widest uppercase border border-foreground/30 text-foreground/60 hover:border-foreground hover:text-foreground active:bg-foreground/8 transition-colors"
+        style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
+      >
+        Idag
       </button>
     </div>
   )
