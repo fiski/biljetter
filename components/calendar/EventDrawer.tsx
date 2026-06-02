@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { EventWithRelations } from '@/types'
 
@@ -33,6 +34,14 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
 
   const firstChar = description[0]
   const rest = description.slice(1)
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [onClose])
 
   return (
     <div
