@@ -144,31 +144,38 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
 
                   {/* Events */}
                   {dayEvents.length > 0 && (
-                    <div className="relative mt-1 overflow-hidden max-h-[276px]">
-                      <div className="space-y-2">
-                        {dayEvents.map((event) => {
-                          const start = new Date(event.startTime)
-                          const end = new Date(event.endTime)
-                          return (
-                            <div
-                              key={event.id}
-                              className={onSelectEvent ? 'cursor-pointer hover:opacity-70 transition-opacity' : ''}
-                              onClick={() => onSelectEvent?.(event)}
-                            >
-                              <div className="text-[14px] font-semibold text-foreground leading-tight">
-                                {event.title}
+                    <div className="relative mt-1">
+                      <div
+                        className="overflow-y-auto max-h-[176px] [&::-webkit-scrollbar]:hidden"
+                        style={{ scrollbarWidth: 'none' }}
+                      >
+                        <div className="space-y-2">
+                          {dayEvents.map((event) => {
+                            const start = new Date(event.startTime)
+                            const end = new Date(event.endTime)
+                            return (
+                              <div
+                                key={event.id}
+                                className={onSelectEvent ? 'cursor-pointer hover:opacity-70 transition-opacity' : ''}
+                                onClick={() => onSelectEvent?.(event)}
+                              >
+                                <div className="text-[14px] font-semibold text-foreground leading-tight">
+                                  {event.title}
+                                </div>
+                                <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
+                                  {event.venue.name}
+                                </div>
+                                <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
+                                  {formatTime(start)} – {formatTime(end)}
+                                </div>
                               </div>
-                              <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
-                                {event.venue.name}
-                              </div>
-                              <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
-                                {formatTime(start)} – {formatTime(end)}
-                              </div>
-                            </div>
-                          )
-                        })}
+                            )
+                          })}
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-[49px] bg-gradient-to-b from-transparent to-background pointer-events-none" />
+                      {dayEvents.length > 3 && (
+                        <div className="absolute bottom-0 left-0 right-0 h-[49px] bg-gradient-to-b from-transparent to-background pointer-events-none" />
+                      )}
                     </div>
                   )}
                 </div>
