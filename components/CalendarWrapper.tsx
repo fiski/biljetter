@@ -10,9 +10,10 @@ import { EventDrawer } from './calendar/EventDrawer'
 import { FilterBar } from './filters/FilterBar'
 import { ViewToggle } from './layout/ViewToggle'
 import { MonthHeader } from './calendar/MonthHeader'
+import { SearchControl } from './search/SearchControl'
 import { useFilterStore } from '@/lib/stores/filterStore'
 import { useEvents } from '@/lib/hooks/useEvents'
-import { mockGenres, mockVenues } from '@/lib/data/mockEvents'
+import { mockEvents, mockGenres, mockVenues } from '@/lib/data/mockEvents'
 
 export type ViewMode = 'list' | 'calendar' | 'grid'
 
@@ -57,6 +58,9 @@ export function CalendarWrapper() {
 
   return (
     <>
+      {/* Global search — overlays everything, opens the event drawer on select */}
+      <SearchControl events={mockEvents} onSelectEvent={setSelectedEvent} />
+
       {/* Calendar — always rendered so it's visible under the drawer */}
       <MonthHeader currentMonth={currentMonth} onNavigate={navigateMonth} onResetToToday={resetToToday} />
 

@@ -7,11 +7,13 @@ interface FilterStore {
   currentMonthMs: number
   selectedGenre: string
   selectedVenue: string
+  searchQuery: string
   grainPaused: boolean
 
   navigateMonth: (direction: 'prev' | 'next') => void
   setGenre: (slug: string) => void
   setVenue: (slug: string) => void
+  setSearchQuery: (query: string) => void
   resetToToday: () => void
   resetFilters: () => void
   toggleGrain: () => void
@@ -23,6 +25,7 @@ export const useFilterStore = create<FilterStore>()(
       currentMonthMs: initialMonthMs,
       selectedGenre: '',
       selectedVenue: '',
+      searchQuery: '',
       grainPaused: false,
 
       navigateMonth: (direction) =>
@@ -38,9 +41,19 @@ export const useFilterStore = create<FilterStore>()(
       resetToToday: () => set({ currentMonthMs: initialMonthMs }),
       setGenre: (slug) => set({ selectedGenre: slug }),
       setVenue: (slug) => set({ selectedVenue: slug }),
+      setSearchQuery: (query) => set({ searchQuery: query }),
       resetFilters: () => set({ selectedGenre: '', selectedVenue: '' }),
       toggleGrain: () => set((state) => ({ grainPaused: !state.grainPaused })),
     }),
-    { name: 'biljetter-filters' }
+    {
+      name: 'biljetter-filters',
+      // searchQuery is transient — don't restore a stale query on reload
+      partialize: (state) => ({
+        currentMonthMs: state.currentMonthMs,
+        selectedGenre: state.selectedGenre,
+        selectedVenue: state.selectedVenue,
+        grainPaused: state.grainPaused,
+      }),
+    }
   )
 )

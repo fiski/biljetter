@@ -1,12 +1,12 @@
-import { Search, Menu } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { CalendarWrapper } from '@/components/CalendarWrapper'
 
 export default function Home() {
   return (
     <div className="min-h-screen relative">
-      {/* Left sidebar icons */}
-      <div className="absolute left-10 top-20 flex flex-col gap-10 text-foreground">
-        <Search size={24} />
+      {/* Left sidebar icons — the Search trigger is rendered by SearchControl
+          (fixed at left-10 top-20); Menu sits just below it. */}
+      <div className="absolute left-10 top-36 flex flex-col gap-10 text-foreground">
         <Menu size={24} />
       </div>
 
