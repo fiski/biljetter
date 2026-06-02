@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Crimson_Text, IBM_Plex_Mono, Inter, Montserrat, Spectral } from "next/font/google";
 import "./globals.css";
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -9,9 +16,37 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const spectral = Spectral({
+  variable: "--font-spectral",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "800"],
+  display: "swap",
+});
+
+const crimsonText = Crimson_Text({
+  variable: "--font-crimson-text",
+  subsets: ["latin"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
@@ -28,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <body
-        className={`${cormorant.variable} ${inter.variable} antialiased`}
+        className={`${cinzel.variable} ${cormorant.variable} ${ibmPlexMono.variable} ${inter.variable} ${montserrat.variable} ${spectral.variable} ${crimsonText.variable} antialiased`}
       >
         {children}
       </body>

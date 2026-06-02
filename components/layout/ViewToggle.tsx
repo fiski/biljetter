@@ -1,0 +1,42 @@
+'use client'
+
+import { List, CalendarDays, LayoutGrid } from 'lucide-react'
+import type { ViewMode } from '../CalendarWrapper'
+
+interface ViewToggleProps {
+  viewMode: ViewMode
+  onViewChange: (mode: ViewMode) => void
+}
+
+const BUTTONS: { mode: ViewMode; Icon: typeof List; label: string }[] = [
+  { mode: 'list', Icon: List, label: 'Listvy' },
+  { mode: 'calendar', Icon: CalendarDays, label: 'Kalendervy' },
+  { mode: 'grid', Icon: LayoutGrid, label: 'Rutnätsvy' },
+]
+
+export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
+  return (
+    <div className="flex items-start border border-foreground">
+      {BUTTONS.map(({ mode, Icon, label }, i) => {
+        const isActive = viewMode === mode
+        return (
+          <button
+            key={mode}
+            type="button"
+            onClick={() => onViewChange(mode)}
+            aria-label={label}
+            className={[
+              'border border-foreground h-10 flex items-center justify-center px-8 py-2.5 transition-colors',
+              i < BUTTONS.length - 1 ? '-mr-px' : '',
+              isActive
+                ? 'bg-accent-bg border-accent text-accent'
+                : 'text-foreground hover:text-accent',
+            ].join(' ')}
+          >
+            <Icon size={24} />
+          </button>
+        )
+      })}
+    </div>
+  )
+}
