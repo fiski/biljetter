@@ -80,28 +80,45 @@ export function CalendarWrapper() {
         <CalendarGrid events={events} currentMonth={currentMonth} onSelectEvent={setSelectedEvent} />
       )}
 
-      {/* Drawer overlay — slides in over the calendar */}
+      {/* Bottom sheet drawer — slides up over the calendar */}
       {selectedEvent && (
-        <div className="fixed inset-0 flex z-50 overflow-hidden">
+        <div
+          className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ease-out ${
+            isDrawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={handleClose}
+        />
+      )}
+      {selectedEvent && (
+        <div
+          className={`fixed bottom-0 left-0 right-0 z-50 flex justify-center items-end gap-3 pointer-events-none transition-transform duration-300 ease-out motion-reduce:transition-none ${
+            isDrawerOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+          onTransitionEnd={() => {
+            if (!isDrawerOpen) setSelectedEvent(null)
+          }}
+        >
+          {/* Day list panel — wide screens only */}
           <div
-            className={`w-[408px] shrink-0 overflow-y-auto pt-4 pb-8 px-6 transition-transform duration-300 ease-out motion-reduce:transition-none ${
-              isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
-            style={{ background: 'var(--background)' }}
+            className="hidden min-[1440px]:flex flex-col w-[408px] h-[85vh] overflow-hidden rounded-t-2xl shrink-0 pointer-events-auto"
+            style={{ background: '#f9f7f1', boxShadow: '0 -8px 32px rgba(0,0,0,0.10), 0 -2px 8px rgba(0,0,0,0.06)' }}
           >
-            <DayListPanel
-              events={upcomingEvents}
-              selectedEventId={selectedEvent.id}
-              onSelectEvent={setSelectedEvent}
-            />
+            <div className="flex justify-center pt-3 pb-1 shrink-0">
+              <div className="w-10 h-1 rounded-full bg-[#363447]/20" />
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto px-10 pt-10 pb-10">
+              <DayListPanel
+                events={upcomingEvents}
+                selectedEventId={selectedEvent.id}
+                onSelectEvent={setSelectedEvent}
+              />
+            </div>
           </div>
+
+          {/* Event info panel */}
           <div
-            className={`flex-1 min-w-0 transition-transform duration-300 ease-out motion-reduce:transition-none ${
-              isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
-            }`}
-            onTransitionEnd={() => {
-              if (!isDrawerOpen) setSelectedEvent(null)
-            }}
+            className="w-full max-w-[920px] h-[85vh] overflow-hidden rounded-t-2xl pointer-events-auto"
+            style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.10), 0 -2px 8px rgba(0,0,0,0.06)' }}
           >
             <EventDrawer event={selectedEvent} onClose={handleClose} />
           </div>

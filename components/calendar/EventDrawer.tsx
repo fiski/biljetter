@@ -31,10 +31,11 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
     ?? (artist?.spotifyId ? `https://open.spotify.com/artist/${artist.spotifyId}` : 'https://open.spotify.com')
   const description =
     event.description ??
-    'En kväll fylld av musik och energi – ett liveframträdande du sent ska glömma. Artisten bjuder på ett varierat set med låtar från hela karriären, varvat med nya spår och improviserade moment som gör varje konsert unik.'
+    'Nästan tjugo år efter att han började sin musikaliska resa har konstnären vuxit till en av de mest hyllade artisterna i sin generation. Med rötter i en rik musiktradition och influenser från blues, rock och afrikansk psykedelisk musik har han skapat ett unikt och omedelbart igenkännbart sound som lyft honom till internationell berömmelse.\n\nHan växte upp i en stad som länge har varit ett kulturellt centrum för sin folkgrupp. Som ung man lärde han sig spela av äldre musiker och absorberade den rika musikaliska tradition som omgav honom. Det var inte förrän han kom i kontakt med västerländsk rockmusik — framför allt Jimi Hendrix och Mark Knopfler — som hans stil verkligen börja blomstra till något alldeles eget.\n\nHans senaste skiva, inspelad tillsammans med en av branschens mest namnkunniga producenter, är ett mästerverk av fusion och känsla. Albumet rör sig sömlöst mellan traditionella melodier och moderna rockriffs, med en intensitet och närvaro som gör det omöjligt att sitta still. Varje spår är ett vittnesbörd om artistens förmåga att brygga kulturer och musikstilar utan att förlora sin distinkta röst.\n\nPå scen är han en kraftfull berättare. Hans spel är tekniskt imponerande men aldrig kallt — det pulserar med liv och emotion. Varje konsert är en resa, från de långsamma drömmande öppningarna till de explosiva finalerna där publiken ofelbart dras med i dansen. Det är musik som talar till kropp och själ på en gång, och som sätter spår långt efter att sista tonen klingat ut.\n\nPå Pustervik bjuder han denna kväll på ett set som sträcker sig över hela karriären — från tidiga folkliga låtar till de senaste elektrifierade styckena. Ta chansen att uppleva en artist som, trots sin internationella framgång, fortfarande bär med sig grunderna i den tradition som format honom. Konserten är en sällsynt möjlighet att se ett av världsmusikens mest fascinerande fenomen på nära håll.\n\nDörrarna öppnar 19:00 och förband spelar från 19:30. Kvällen avslutas runt midnatt. Inga åldersgränser, alla välkomna. Biljetter säljs i dörren om ej slutsålt i förväg — vi rekommenderar bokning online för att garantera din plats på detta unika framträdande.'
 
-  const firstChar = description[0]
-  const rest = description.slice(1)
+  const paragraphs = description.split('\n\n').filter(Boolean)
+  const firstChar = paragraphs[0]?.[0] ?? ''
+  const firstRest = paragraphs[0]?.slice(1) ?? ''
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -45,14 +46,12 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
   }, [onClose])
 
   return (
-    <div
-      className="h-full overflow-y-auto"
-      style={{
-        background: '#f9f7f1',
-        boxShadow: '-33px 0 32.5px rgba(0,0,0,0.08), -23px 0 13px rgba(0,0,0,0.06), -15px 0 7px rgba(0,0,0,0.04)',
-      }}
-    >
-      <div className="px-[86px] pt-[48px] pb-[80px]">
+    <div className="h-full overflow-y-auto" style={{ background: '#f9f7f1' }}>
+      {/* Drag handle */}
+      <div className="flex justify-center pt-3 pb-1">
+        <div className="w-10 h-1 rounded-full bg-[#363447]/20" />
+      </div>
+      <div className="px-[86px] pt-4 pb-[80px]">
         {/* Close button */}
         <div className="flex justify-end mb-2">
           <button
@@ -136,16 +135,21 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
 
         {/* Description with drop cap */}
         <div
-          className="text-[#363447] text-[18px] leading-[1.5] mb-10"
+          className="text-[#363447] text-[18px] leading-[1.5] mb-10 space-y-6"
           style={{ fontFamily: 'var(--font-cormorant)', fontWeight: 600 }}
         >
-          <span
-            className="float-left font-bold leading-[0.8] mr-1 mt-1"
-            style={{ fontFamily: 'var(--font-cormorant)', fontSize: '89px', color: '#363447' }}
-          >
-            {firstChar}
-          </span>
-          {rest}
+          <p>
+            <span
+              className="float-left font-bold leading-[0.8] mr-1 mt-1"
+              style={{ fontFamily: 'var(--font-cormorant)', fontSize: '89px', color: '#363447' }}
+            >
+              {firstChar}
+            </span>
+            {firstRest}
+          </p>
+          {paragraphs.slice(1).map((p, i) => (
+            <p key={i} className="clear-both">{p}</p>
+          ))}
         </div>
 
         {/* Outlined Biljetter */}
@@ -165,14 +169,23 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
           </a>
         </div>
 
-        {/* Map placeholder */}
-        <div className="w-full h-[300px] bg-[#e0ddd6] flex items-end p-4">
-          <p
-            className="text-[13px] text-[#363447]/60"
-            style={{ fontFamily: 'var(--font-montserrat)' }}
-          >
-            {event.venue.name} · {event.venue.address}, {event.venue.city}
-          </p>
+        {/* Map */}
+        <div className="relative w-full h-[443px] overflow-hidden">
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=11.938%2C57.696%2C11.969%2C57.706&layer=mapnik&marker=57.7002%2C11.9535"
+            className="w-full h-full border-0"
+            title="Karta"
+            style={{ pointerEvents: 'none' }}
+          />
+          <GrainOverlay />
+          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#f9f7f1]/80 to-transparent">
+            <p
+              className="text-[13px] text-[#363447]"
+              style={{ fontFamily: 'var(--font-montserrat)' }}
+            >
+              {event.venue.name} · {event.venue.address}, {event.venue.city}
+            </p>
+          </div>
         </div>
       </div>
     </div>

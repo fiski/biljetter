@@ -33,7 +33,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
   const days = groupByDate(events)
 
   return (
-    <div className="flex flex-col gap-12 pb-20">
+    <div className="flex flex-col gap-12">
       {days.map(({ date, events: dayEvents }, dayIdx) => {
         const day = date.getDate()
         const month = SWEDISH_MONTHS_LONG[date.getMonth()]
@@ -50,7 +50,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
             <div className="h-px bg-[#363447] mb-6" />
 
             {dayEvents.length > 0 && (
-              <div className="flex flex-col gap-6">
+              <div className="grid gap-6" style={{ gridTemplateColumns: '1fr' }}>
                 {dayEvents.map((event) => {
                   const artist = event.artists[0]
                   const start = new Date(event.startTime)
