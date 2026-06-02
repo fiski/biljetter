@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { EventWithRelations } from '@/types'
 import { CalendarGrid } from './calendar/CalendarGrid'
 import { ListView } from './calendar/ListView'
@@ -19,6 +19,16 @@ export type ViewMode = 'list' | 'calendar' | 'grid'
 export function CalendarWrapper() {
   const [viewMode, setViewMode] = useState<ViewMode>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<EventWithRelations | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  useEffect(() => {
+    if (selectedEvent) {
+      const id = requestAnimationFrame(() => setIsDrawerOpen(true))
+      return () => cancelAnimationFrame(id)
+    }
+  }, [selectedEvent])
+
+  const handleClose = useCallback(() => setIsDrawerOpen(false), [])
 
   const { currentMonthMs, selectedGenre, selectedVenue, navigateMonth, setGenre, setVenue } =
     useFilterStore()
@@ -35,28 +45,9 @@ export function CalendarWrapper() {
     .filter((e) => new Date(e.startTime) >= new Date(new Date().setHours(0, 0, 0, 0)))
     .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
 
-  if (selectedEvent) {
-    return (
-      <div className="fixed inset-0 flex z-50">
-        <div
-          className="w-[408px] shrink-0 overflow-y-auto pt-4 pb-8 px-6"
-          style={{ background: 'var(--background)' }}
-        >
-          <DayListPanel
-            events={upcomingEvents}
-            selectedEventId={selectedEvent.id}
-            onSelectEvent={setSelectedEvent}
-          />
-        </div>
-        <div className="flex-1 min-w-0">
-          <EventDrawer event={selectedEvent} onClose={() => setSelectedEvent(null)} />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
+      {/* Calendar — always rendered so it's visible under the drawer */}
       <MonthHeader currentMonth={currentMonth} onNavigate={navigateMonth} />
 
       <div className="flex items-end justify-between mb-6">
@@ -77,6 +68,34 @@ export function CalendarWrapper() {
         <MasonryView events={events} onSelectEvent={setSelectedEvent} />
       ) : (
         <CalendarGrid events={events} currentMonth={currentMonth} onSelectEvent={setSelectedEvent} />
+      )}
+
+      {/* Drawer overlay — slides in over the calendar */}
+      {selectedEvent && (
+        <div className="fixed inset-0 flex z-50 overflow-hidden">
+          <div
+            className={`w-[408px] shrink-0 overflow-y-auto pt-4 pb-8 px-6 transition-transform duration-300 ease-out motion-reduce:transition-none ${
+              isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+            style={{ background: 'var(--background)' }}
+          >
+            <DayListPanel
+              events={upcomingEvents}
+              selectedEventId={selectedEvent.id}
+              onSelectEvent={setSelectedEvent}
+            />
+          </div>
+          <div
+            className={`flex-1 min-w-0 transition-transform duration-300 ease-out motion-reduce:transition-none ${
+              isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+            onTransitionEnd={() => {
+              if (!isDrawerOpen) setSelectedEvent(null)
+            }}
+          >
+            <EventDrawer event={selectedEvent} onClose={handleClose} />
+          </div>
+        </div>
       )}
     </>
   )
