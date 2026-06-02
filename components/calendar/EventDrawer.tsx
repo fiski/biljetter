@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { EventWithRelations } from '@/types'
+import { GrainOverlay } from '@/components/ui/GrainOverlay'
 
 function SpotifyIcon() {
   return (
@@ -91,7 +92,7 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
         </div>
 
         {/* Artist photo */}
-        <div className="w-full h-[360px] overflow-hidden mb-4 bg-[#363447]/10">
+        <div className="relative w-full h-[360px] overflow-hidden mb-4 bg-[#363447]/10">
           {artist?.imageUrl && (
             <img
               src={artist.imageUrl}
@@ -99,6 +100,7 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
               className="w-full h-full object-cover"
             />
           )}
+          <GrainOverlay />
         </div>
 
         {/* Spotify + Biljetter */}

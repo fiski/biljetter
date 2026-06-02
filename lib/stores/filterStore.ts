@@ -7,12 +7,14 @@ interface FilterStore {
   currentMonthMs: number
   selectedGenre: string
   selectedVenue: string
+  grainPaused: boolean
 
   navigateMonth: (direction: 'prev' | 'next') => void
   setGenre: (slug: string) => void
   setVenue: (slug: string) => void
   resetToToday: () => void
   resetFilters: () => void
+  toggleGrain: () => void
 }
 
 export const useFilterStore = create<FilterStore>()(
@@ -21,6 +23,7 @@ export const useFilterStore = create<FilterStore>()(
       currentMonthMs: initialMonthMs,
       selectedGenre: '',
       selectedVenue: '',
+      grainPaused: false,
 
       navigateMonth: (direction) =>
         set((state) => {
@@ -36,6 +39,7 @@ export const useFilterStore = create<FilterStore>()(
       setGenre: (slug) => set({ selectedGenre: slug }),
       setVenue: (slug) => set({ selectedVenue: slug }),
       resetFilters: () => set({ selectedGenre: '', selectedVenue: '' }),
+      toggleGrain: () => set((state) => ({ grainPaused: !state.grainPaused })),
     }),
     { name: 'biljetter-filters' }
   )

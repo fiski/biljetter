@@ -1,6 +1,7 @@
 'use client'
 
 import { EventWithRelations } from '@/types'
+import { GrainOverlay } from '@/components/ui/GrainOverlay'
 
 const SWEDISH_MONTHS_LONG = [
   'januari', 'februari', 'mars', 'april', 'maj', 'juni',
@@ -64,7 +65,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
                       }`}
                       onClick={() => onSelectEvent(event)}
                     >
-                      <div className="w-full h-[224px] overflow-hidden">
+                      <div className="relative w-full h-[224px] overflow-hidden">
                         {artist?.imageUrl ? (
                           <img
                             src={artist.imageUrl}
@@ -74,6 +75,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
                         ) : (
                           <div className="w-full h-full bg-[#363447]/10" />
                         )}
+                        <GrainOverlay />
                       </div>
                       <div className="flex flex-col gap-1">
                         <p

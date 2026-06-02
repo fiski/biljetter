@@ -1,6 +1,7 @@
 'use client'
 
 import { EventWithRelations } from '@/types'
+import { GrainOverlay } from '@/components/ui/GrainOverlay'
 
 const SWEDISH_MONTHS_SHORT = [
   'januari', 'februari', 'mars', 'april', 'maj', 'juni',
@@ -48,6 +49,7 @@ function MasonryCard({
             'linear-gradient(to bottom, rgba(0,0,0,0) 58%, rgba(0,0,0,0.7) 100%)',
         }}
       />
+      <GrainOverlay />
 
       {/* Artist name + date */}
       <div className="absolute bottom-0 left-0 right-0 pb-4 pl-4 pr-2 pt-2 flex flex-col gap-1.5">

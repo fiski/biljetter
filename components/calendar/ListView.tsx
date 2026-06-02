@@ -1,6 +1,7 @@
 'use client'
 
 import { EventWithRelations } from '@/types'
+import { GrainOverlay } from '@/components/ui/GrainOverlay'
 
 const SWEDISH_WEEKDAYS = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag']
 const SWEDISH_MONTHS = [
@@ -34,7 +35,7 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
       {/* Artist image — click to open detail */}
       <button
         type="button"
-        className={`shrink-0 w-[409px] h-[316px] overflow-hidden bg-foreground-secondary/10 ${onSelectEvent ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+        className={`relative shrink-0 w-[409px] h-[316px] overflow-hidden bg-foreground-secondary/10 ${onSelectEvent ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
         onClick={() => onSelectEvent?.(event)}
         aria-label={`Visa detaljer för ${artist?.name ?? event.title}`}
       >
@@ -45,6 +46,7 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
             className="w-full h-full object-cover"
           />
         )}
+        <GrainOverlay />
       </button>
 
       {/* Event details */}
