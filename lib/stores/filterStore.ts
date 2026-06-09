@@ -38,7 +38,8 @@ export const useFilterStore = create<FilterStore>()(
           return { currentMonthMs: next.getTime() }
         }),
 
-      resetToToday: () => set({ currentMonthMs: initialMonthMs }),
+      resetToToday: () =>
+        set({ currentMonthMs: new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime() }),
       setGenre: (slug) => set({ selectedGenre: slug }),
       setVenue: (slug) => set({ selectedVenue: slug }),
       setSearchQuery: (query) => set({ searchQuery: query }),

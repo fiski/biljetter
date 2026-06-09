@@ -2,11 +2,7 @@
 
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
-
-const SWEDISH_MONTHS_LONG = [
-  'januari', 'februari', 'mars', 'april', 'maj', 'juni',
-  'juli', 'augusti', 'september', 'oktober', 'november', 'december',
-]
+import { SWEDISH_MONTHS } from '@/lib/utils/formatDate'
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })
@@ -36,7 +32,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
     <div className="flex flex-col gap-12">
       {days.map(({ date, events: dayEvents }, dayIdx) => {
         const day = date.getDate()
-        const month = SWEDISH_MONTHS_LONG[date.getMonth()]
+        const month = SWEDISH_MONTHS[date.getMonth()]
         const label = dayIdx === 0 ? `${day} ${month}` : String(day).padStart(2, '0')
 
         return (
@@ -50,7 +46,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
             <div className="h-px bg-[#363447] mb-6" />
 
             {dayEvents.length > 0 && (
-              <div className="grid gap-6" style={{ gridTemplateColumns: '1fr' }}>
+              <div className="flex flex-col gap-6">
                 {dayEvents.map((event) => {
                   const artist = event.artists[0]
                   const start = new Date(event.startTime)

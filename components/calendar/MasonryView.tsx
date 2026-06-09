@@ -2,11 +2,7 @@
 
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
-
-const SWEDISH_MONTHS_SHORT = [
-  'januari', 'februari', 'mars', 'april', 'maj', 'juni',
-  'juli', 'augusti', 'september', 'oktober', 'november', 'december',
-]
+import { SWEDISH_MONTHS } from '@/lib/utils/formatDate'
 
 // Height pattern (px) — cycles across all cards for organic bento feel
 const CARD_HEIGHTS = [320, 200, 380, 240, 280, 160, 360, 220, 300, 180, 400, 200]
@@ -22,7 +18,7 @@ function MasonryCard({
 }) {
   const artist = event.artists[0]
   const date = new Date(event.startTime)
-  const dateStr = `${date.getDate()} ${SWEDISH_MONTHS_SHORT[date.getMonth()]}`
+  const dateStr = `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]}`
 
   return (
     <div

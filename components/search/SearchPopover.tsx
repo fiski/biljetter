@@ -30,9 +30,10 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
     return events
       .filter(
         (e) =>
-          e.title.toLowerCase().includes(trimmed) ||
+          e.status !== 'cancelled' &&
+          (e.title.toLowerCase().includes(trimmed) ||
           e.venue.name.toLowerCase().includes(trimmed) ||
-          e.artists.some((a) => a.name.toLowerCase().includes(trimmed))
+          e.artists.some((a) => a.name.toLowerCase().includes(trimmed)))
       )
       .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
   }, [events, trimmed])

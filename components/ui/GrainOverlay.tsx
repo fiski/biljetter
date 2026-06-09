@@ -17,11 +17,6 @@ export function GrainOverlay() {
     }
   }, [grainPaused])
 
-  // Autoplay on mount — browser may block declarative autoplay on dynamically rendered elements
-  useEffect(() => {
-    ref.current?.play().catch(() => {})
-  }, [])
-
   return (
     <video
       ref={ref}

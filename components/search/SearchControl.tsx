@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Search } from 'lucide-react'
 import { EventWithRelations } from '@/types'
 import { useFilterStore } from '@/lib/stores/filterStore'
@@ -16,11 +16,18 @@ export function SearchControl({ events, onSelectEvent }: SearchControlProps) {
   const [open, setOpen] = useState(false)
   const [visible, setVisible] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
-  const close = () => {
+  const close = useCallback(() => {
     setVisible(false)
     setSearchQuery('')
-  }
+    // Fallback for prefers-reduced-motion: transition-none means onTransitionEnd
+    // never fires, so setOpen(false) would never be called without this timer.
+    clearTimeout(closeTimerRef.current)
+    closeTimerRef.current = setTimeout(() => setOpen(false), 250)
+  }, [setSearchQuery])
+
+  useEffect(() => () => clearTimeout(closeTimerRef.current), [])
 
   // Drive the enter/exit transition off `open`.
   useEffect(() => {
@@ -45,7 +52,7 @@ export function SearchControl({ events, onSelectEvent }: SearchControlProps) {
       document.removeEventListener('keydown', onKey)
       document.removeEventListener('mousedown', onPointer)
     }
-  }, [open])
+  }, [open, close])
 
   const handleSelect = (event: EventWithRelations) => {
     onSelectEvent(event)
