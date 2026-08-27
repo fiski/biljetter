@@ -66,6 +66,12 @@ logs
 # Optional npm cache directory
 .npm
 
+# Impeccable local session/runtime state (config itself is tracked)
+.impeccable/config.local.json
+.impeccable/live/sessions/
+.impeccable/live/roots.json
+.impeccable/live/inject-journal.json
+
 # Optional eslint cache
 .eslintcache
 

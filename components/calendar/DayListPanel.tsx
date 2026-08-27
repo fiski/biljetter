@@ -38,12 +38,12 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
         return (
           <div key={`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`}>
             <p
-              className="text-[34px] text-[#363447] leading-tight pb-6"
+              className="text-[30px] text-[#363447] leading-tight pb-6"
               style={{ fontFamily: 'var(--font-spectral)', fontWeight: 700 }}
             >
               {label}
             </p>
-            <div className="h-px bg-[#363447] mb-6" />
+            <div className="h-px bg-[#363447] mb-4" />
 
             {dayEvents.length > 0 && (
               <div className="flex flex-col gap-6">
@@ -55,10 +55,10 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
                   return (
                     <button
                       key={event.id}
-                      className="flex flex-col gap-4 text-left w-full"
+                      className="flex flex-col gap-4 text-left w-full -mx-2 -my-1.5 px-2 py-1.5 transition-colors hover:bg-foreground-secondary/[0.06] cursor-pointer"
                       onClick={() => onSelectEvent(event)}
                     >
-                      <div className="relative w-full h-[224px] overflow-hidden">
+                      <div className="relative w-full h-[264px] overflow-hidden">
                         {artist?.imageUrl ? (
                           <img
                             src={artist.imageUrl}
@@ -72,7 +72,7 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
                       </div>
                       <div className="flex flex-col gap-1">
                         <p
-                          className="text-[24px] font-bold text-[#dd4829] leading-tight"
+                          className="text-[32px] font-bold text-[#dd4829] leading-tight"
                           style={{ fontFamily: 'var(--font-cormorant)' }}
                         >
                           {artist?.name ?? event.title}

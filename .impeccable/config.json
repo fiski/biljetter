@@ -1,0 +1,38 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "34px",
+        "createdAt": "2026-08-27T13:37:03.596Z",
+        "reason": "pre-existing calendar day-number size, within DESIGN.md's documented Headline 32-80px range"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "12px",
+        "createdAt": "2026-08-27T13:37:03.644Z",
+        "reason": "pre-existing event metadata size (venue/time), within DESIGN.md's documented Label 12-18px range"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "32px",
+        "createdAt": "2026-08-27T13:46:48.874Z",
+        "reason": "matches ListView.tsx's artist-name size (text-[32px]); within DESIGN.md's documented Headline 32-80px range"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "30px",
+        "createdAt": "2026-08-27T14:11:17.811Z",
+        "reason": "user asked to shrink the day-list date header by a small margin; matches the existing 34px 'day number' voice used elsewhere (CalendarGrid), just slightly smaller — not a new ad-hoc size"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "44px",
+        "createdAt": "2026-08-27T14:15:09.878Z",
+        "reason": "user asked to shrink the 80px event-title h1 on laptop widths; 44px is just the clamp() floor of the same headline voice, not a new size"
+      }
+    ]
+  }
+}

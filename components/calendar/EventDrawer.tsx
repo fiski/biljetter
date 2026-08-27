@@ -66,7 +66,7 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
         {/* Artist name */}
         <h1
           className="text-[#0f0f0f] leading-none mb-6"
-          style={{ fontFamily: 'var(--font-cormorant)', fontWeight: 700, fontSize: '80px' }}
+          style={{ fontFamily: 'var(--font-cormorant)', fontWeight: 700, fontSize: 'clamp(44px, 4.5vw, 80px)' }}
         >
           {artist?.name ?? event.title}
         </h1>

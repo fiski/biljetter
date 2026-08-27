@@ -96,7 +96,7 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
         {DAY_HEADERS.map((day, i) => (
           <div
             key={day}
-            className={`py-3 text-[14px] font-semibold uppercase tracking-tight ${
+            className={`px-4 py-3 text-[14px] font-semibold uppercase tracking-tight ${
               i === 5 ? 'text-accent' : 'text-foreground-secondary'
             }`}
           >
@@ -122,7 +122,7 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
               return (
                 <div
                   key={dateKey}
-                  className={`min-h-[130px] p-2 ${!day.isCurrentMonth ? 'opacity-40' : ''}`}
+                  className={`min-h-[150px] p-4 ${!day.isCurrentMonth ? 'opacity-40' : ''}`}
                 >
                   {/* Day number */}
                   <div
@@ -144,38 +144,32 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
 
                   {/* Events */}
                   {dayEvents.length > 0 && (
-                    <div className="relative mt-1">
-                      <div
-                        className="overflow-y-auto max-h-[176px] [&::-webkit-scrollbar]:hidden"
-                        style={{ scrollbarWidth: 'none' }}
-                      >
-                        <div className="space-y-2">
-                          {dayEvents.map((event) => {
-                            const start = new Date(event.startTime)
-                            const end = new Date(event.endTime)
-                            return (
-                              <div
-                                key={event.id}
-                                className={onSelectEvent ? 'cursor-pointer hover:opacity-70 transition-opacity' : ''}
-                                onClick={() => onSelectEvent?.(event)}
-                              >
-                                <div className="text-[14px] font-semibold text-foreground leading-tight">
-                                  {event.title}
-                                </div>
-                                <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
-                                  {event.venue.name}
-                                </div>
-                                <div className="text-[12px] font-medium text-foreground-secondary leading-tight">
-                                  {formatTime(start)} – {formatTime(end)}
-                                </div>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                      {dayEvents.length > 3 && (
-                        <div className="absolute bottom-0 left-0 right-0 h-[49px] bg-gradient-to-b from-transparent to-background pointer-events-none" />
-                      )}
+                    <div className="space-y-4 mt-4">
+                      {dayEvents.map((event) => {
+                        const start = new Date(event.startTime)
+                        const end = new Date(event.endTime)
+                        return (
+                          <div
+                            key={event.id}
+                            className={
+                              onSelectEvent
+                                ? '-mx-2 -my-1.5 px-2 py-1.5 cursor-pointer transition-colors hover:bg-foreground-secondary/[0.06]'
+                                : ''
+                            }
+                            onClick={() => onSelectEvent?.(event)}
+                          >
+                            <div className="text-[14px] font-semibold text-foreground leading-tight">
+                              {event.title}
+                            </div>
+                            <div className="text-[12px] font-medium text-foreground-secondary leading-tight mt-1">
+                              {event.venue.name}
+                            </div>
+                            <div className="text-[12px] font-medium text-foreground-secondary leading-tight mt-1">
+                              {formatTime(start)} – {formatTime(end)}
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>

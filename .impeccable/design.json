@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-27T00:00:00.000Z",
+  "title": "Design System: biljetter",
+  "extensions": {
+    "colorMeta": {
+      "poster-red-orange": {
+        "role": "primary",
+        "displayName": "Poster Red-Orange",
+        "canonical": "#DD4829",
+        "tonalRamp": ["#4A150A", "#6E1F0F", "#932913", "#B83317", "#DD4829", "#E67A5C", "#EFAB94", "#F8D6CB"]
+      },
+      "dusty-blush": {
+        "role": "secondary",
+        "displayName": "Dusty Blush",
+        "canonical": "#E5CBC6",
+        "tonalRamp": ["#4A362F", "#6E4F45", "#93695B", "#B8917F", "#E5CBC6", "#EDDAD6", "#F3E7E4", "#F9F3F1"]
+      },
+      "newsprint-cream": {
+        "role": "neutral",
+        "displayName": "Newsprint Cream",
+        "canonical": "#F9F7F1",
+        "tonalRamp": ["#2B2A25", "#514F45", "#78746A", "#A19C8E", "#C9C4B4", "#E4E0D4", "#F9F7F1", "#FCFBF8"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#0F0F0F",
+        "tonalRamp": ["#000000", "#0F0F0F", "#2B2B2B", "#484848", "#666666", "#8A8A8A", "#B8B8B8", "#E5E5E5"]
+      },
+      "masthead-indigo": {
+        "role": "neutral",
+        "displayName": "Masthead Indigo",
+        "canonical": "#363447",
+        "tonalRamp": ["#0F0E15", "#1E1D28", "#2A2836", "#363447", "#565269", "#7B778C", "#A6A3B3", "#D3D1D9"]
+      },
+      "wire-grey": { "role": "neutral", "displayName": "Wire Grey", "canonical": "#9E9E9E" },
+      "hairline-grey": { "role": "neutral", "displayName": "Hairline Grey", "canonical": "#D4D4D4" },
+      "bright-white": { "role": "neutral", "displayName": "Bright White", "canonical": "#FFFFFF" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Cinzel", "purpose": "Month/year masthead only — never used elsewhere." },
+      "headline": { "displayName": "Cormorant Garamond", "purpose": "Artist names, day numbers, list day headers, drawer title." },
+      "stat": { "displayName": "Spectral", "purpose": "Listener counts, day-rail labels, masonry artist name." },
+      "label": { "displayName": "Montserrat", "purpose": "Weekday headers, venue names, footer links, small UI labels." },
+      "mono": { "displayName": "IBM Plex Mono", "purpose": "Filters, search UI, 'Idag' button — the interactive/data register." },
+      "button": { "displayName": "Crimson Text", "purpose": "'Biljetter' CTA label only." },
+      "body": { "displayName": "Inter", "purpose": "Default page sans fallback; lightly used." }
+    },
+    "shadows": [
+      { "name": "sheet-rise", "value": "0 -8px 32px rgba(0,0,0,0.10), 0 -2px 8px rgba(0,0,0,0.06)", "purpose": "Bottom sheet drawer, upward glow." },
+      { "name": "popover-drop", "value": "0px 33px 32.5px rgba(0,0,0,0.08), 0px 23px 13px rgba(0,0,0,0.06), 0px 15px 7px rgba(0,0,0,0.04), 0px 9px 4px rgba(0,0,0,0.03), 0px 4px 2px rgba(0,0,0,0.02)", "purpose": "Search popover, downward glow." }
+    ],
+    "motion": [
+      { "name": "sheet-slide", "value": "transform 300ms ease-out", "purpose": "Bottom sheet enter/exit (translate-y)." },
+      { "name": "popover-fade", "value": "opacity/transform 200ms ease-out", "purpose": "Search popover enter/exit (opacity + scale)." }
+    ],
+    "breakpoints": [
+      { "name": "day-rail", "value": "1440px", "purpose": "Below this, the bottom-sheet day-list rail is hidden." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid ink CTA — 'Biljetter' at the top of the event drawer.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Biljetter</a>",
+      "css": ".ds-btn-primary { display: inline-block; background: #0F0F0F; color: #F9F7F1; font-family: 'Crimson Text', serif; font-weight: 600; font-size: 16px; text-transform: capitalize; padding: 11px 42px; border-radius: 0; transition: opacity 0.2s; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { opacity: 0.8; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined CTA that inverts on hover — repeated 'Biljetter' in list cards and drawer footer.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">Biljetter</a>",
+      "css": ".ds-btn-secondary { display: inline-block; background: transparent; color: #0F0F0F; border: 1px solid #0F0F0F; font-family: 'Crimson Text', serif; font-weight: 600; font-size: 16px; text-transform: capitalize; padding: 11px 42px; border-radius: 0; transition: background 0.2s, color 0.2s; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { background: #0F0F0F; color: #F9F7F1; }"
+    },
+    {
+      "name": "View Toggle",
+      "kind": "nav",
+      "refersTo": "toggle-active",
+      "description": "Connected icon-button row for switching Calendar/List/Grid views; active state is a tint, not a fill.",
+      "html": "<div class=\"ds-toggle-group\"><button class=\"ds-toggle-btn\">☰</button><button class=\"ds-toggle-btn ds-toggle-btn--active\">▦</button><button class=\"ds-toggle-btn\">▤</button></div>",
+      "css": ".ds-toggle-group { display: flex; border: 1px solid #0F0F0F; } .ds-toggle-btn { border: 1px solid #0F0F0F; border-left: none; height: 40px; padding: 0 32px; background: transparent; color: #0F0F0F; transition: color 0.2s; } .ds-toggle-btn:first-child { border-left: 1px solid #0F0F0F; } .ds-toggle-btn:hover, .ds-toggle-btn:focus-visible { color: #DD4829; } .ds-toggle-btn--active { background: #E5CBC6; border-color: #DD4829; color: #DD4829; }"
+    },
+    {
+      "name": "Search Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Popular-search pill in the search popover.",
+      "html": "<button class=\"ds-chip\">Pustervik</button>",
+      "css": ".ds-chip { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #0F0F0F; background: transparent; border: 1px solid #0F0F0F; border-radius: 22px; padding: 8px 16px; transition: background 0.2s, color 0.2s; } .ds-chip:hover, .ds-chip:focus-visible { background: #0F0F0F; color: #F9F7F1; }"
+    },
+    {
+      "name": "Filter Select",
+      "kind": "input",
+      "refersTo": "filter-select",
+      "description": "Genre/venue filter dropdown — mono type, sharp bordered rectangle.",
+      "html": "<select class=\"ds-select\"><option>All musik</option></select>",
+      "css": ".ds-select { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #0F0F0F; background: #F9F7F1; border: 1px solid #0F0F0F; padding: 8px 40px 8px 16px; border-radius: 0; appearance: none; }"
+    },
+    {
+      "name": "Masonry Card",
+      "kind": "card",
+      "refersTo": "masonry-card",
+      "description": "Signature bento-style photo card with dark gradient, grain overlay, and Spectral/Montserrat caption.",
+      "html": "<div class=\"ds-masonry-card\" style=\"height:280px\"><img class=\"ds-masonry-card__img\" src=\"\" alt=\"\" /><div class=\"ds-masonry-card__gradient\"></div><div class=\"ds-masonry-card__caption\"><p class=\"ds-masonry-card__name\">Ben Howard</p><p class=\"ds-masonry-card__date\">14 augusti</p></div></div>",
+      "css": ".ds-masonry-card { position: relative; overflow: hidden; } .ds-masonry-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; } .ds-masonry-card__gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 58%, rgba(0,0,0,0.7) 100%); } .ds-masonry-card__caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 8px 16px 16px; display: flex; flex-direction: column; gap: 6px; } .ds-masonry-card__name { color: #fff; font-family: 'Spectral', serif; font-weight: 800; font-size: 16px; line-height: 16px; } .ds-masonry-card__date { color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 16px; line-height: 16px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Late Edition",
+    "overview": "biljetter reads as a nightly arts-desk dispatch on Göteborg's concert scene rather than a generic ticketing aggregator — the point of the product, per PRODUCT.md, is that editorial curation and presentation *are* the value, not a skin on raw listings. That newspaper gravity shows up everywhere: a ceremonial all-caps Cinzel masthead for the month title, a large serif (Cormorant Garamond) carrying artist names and day numbers the way a broadsheet carries a byline, drop-capped body copy in event descriptions, and a warm off-white \"newsprint\" page rather than clinical white. Photography carries a constant, subtle film-grain overlay, and hairline rules (not shadows or cards) do the job of separating sections — the same restraint a printed page uses.\n\nColor is used the way a paper uses its one spot color: almost never, and always meaningfully. Poster Red-Orange is reserved for calls to action, Saturday (the big-gig night), the \"today\" marker, and a couple of signature accents in the bottom-sheet rail — everywhere else the page is ink-on-cream.",
+    "keyCharacteristics": [
+      "Warm, paper-toned neutral palette; ink-black text, not pure black-on-white",
+      "A six-voice type system, each font doing one job consistently",
+      "Hairline borders as the primary structural device; flat by default",
+      "Constant film-grain texture over every photographic surface",
+      "Accent color used sparingly and with intent (CTAs, Saturday, \"today\", selection)",
+      "No page chrome beyond what's needed — content and whitespace carry the design"
+    ],
+    "rules": [
+      { "name": "The One Spot-Color Rule", "body": "Poster Red-Orange appears only on things that are actionable or time-sensitive (buttons, Saturday, today, selection) — never as decoration. If a new element wants red-orange \"for emphasis\" without one of those jobs, it's the wrong color.", "section": "colors" },
+      { "name": "The One Job Per Face Rule", "body": "Each of the six fonts has exactly one job (masthead / name-or-number / stat / label / control-and-data / CTA). Don't borrow a font for a new job just because it \"looks nice\" there — introduce a role decision instead.", "section": "typography" }
+    ],
+    "dos": [
+      "Do keep Poster Red-Orange rare and purposeful — CTAs, Saturday, \"today,\" selection. Not for illustration or decoration.",
+      "Do apply the Grain Overlay to any new photographic surface (artist photos, venue photos, maps) to keep the paper-like texture consistent.",
+      "Do use hairline borders (mostly Masthead Indigo) as the default separator instead of reaching for a shadow or a card background.",
+      "Do keep each of the six type faces to its one established job rather than introducing a seventh voice or reassigning an existing one.",
+      "Do let calendar cells and similar content-driven containers grow to fit their content rather than clipping or forcing a scrollbar."
+    ],
+    "donts": [
+      "Don't add card shadows or drop shadows to content at rest (grid cells, list rows, masonry cards) — shadow is currently reserved for floating overlays (bottom sheet, search popover) only.",
+      "Don't introduce a second accent color alongside Poster Red-Orange; Dusty Blush is a tint of the same system, not a competing hue.",
+      "Don't add border-radius to structural containers (cards, buttons, cells, images) by default — radius is reserved for the small set of soft affordances (drag handle, today-marker, sheet corners, search chips).",
+      "Don't use pure white (#FFFFFF / Bright White) as a page or card background in place of Newsprint Cream; the warm off-white is the paper tone the rest of the system is tuned against."
+    ]
+  }
+}
