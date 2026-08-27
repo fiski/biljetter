@@ -29,7 +29,7 @@ export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
         {grainPaused ? 'Spela animationer' : 'Pausa animationer'}
       </button>
 
-      <div className="flex items-start border border-foreground">
+      <div className="flex items-start">
         {BUTTONS.map(({ mode, Icon, label }, i) => {
           const isActive = viewMode === mode
           return (
@@ -39,14 +39,16 @@ export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
               onClick={() => onViewChange(mode)}
               aria-label={label}
               className={[
-                'border border-foreground h-10 flex items-center justify-center px-8 py-2.5 transition-colors cursor-pointer',
+                'border h-10 flex items-center justify-center px-8 py-2.5 transition-colors cursor-pointer',
                 i < BUTTONS.length - 1 ? '-mr-px' : '',
                 isActive
-                  ? 'bg-accent-bg border-accent text-accent'
-                  : 'text-foreground hover:text-accent',
+                  // relative z-10 keeps the accent border on top of the neighbouring
+                  // button's ink border, which the -mr-px overlap would otherwise paint over
+                  ? 'relative z-10 bg-accent-bg border-accent text-accent'
+                  : 'border-foreground text-foreground hover:text-accent',
               ].join(' ')}
             >
-              <Icon size={24} />
+              <Icon size={24} strokeWidth={1.5} />
             </button>
           )
         })}

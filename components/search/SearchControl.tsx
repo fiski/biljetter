@@ -68,7 +68,7 @@ export function SearchControl({ events, onSelectEvent }: SearchControlProps) {
         onClick={() => (open ? close() : setOpen(true))}
         className="fixed left-10 top-20 z-50 text-foreground hover:text-accent transition-colors cursor-pointer"
       >
-        <Search size={24} />
+        <Search size={24} strokeWidth={1.5} />
       </button>
 
       {open && (

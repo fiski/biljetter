@@ -39,7 +39,7 @@ export function FilterBar({
               <option key={genre.id} value={genre.slug}>{genre.name}</option>
             ))}
           </select>
-          <ChevronDown size={24} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground" />
+          <ChevronDown size={24} strokeWidth={1.5} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground" />
         </div>
       </div>
 
@@ -60,7 +60,7 @@ export function FilterBar({
               <option key={venue.id} value={venue.slug}>{venue.name}</option>
             ))}
           </select>
-          <ChevronDown size={24} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground" />
+          <ChevronDown size={24} strokeWidth={1.5} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground" />
         </div>
       </div>
     </div>
