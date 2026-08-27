@@ -25,7 +25,7 @@ interface DayListPanelProps {
   onSelectEvent: (event: EventWithRelations) => void
 }
 
-export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayListPanelProps) {
+export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
   const days = groupByDate(events)
 
   return (
@@ -51,14 +51,11 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
                   const artist = event.artists[0]
                   const start = new Date(event.startTime)
                   const end = new Date(event.endTime)
-                  const isSelected = event.id === selectedEventId
 
                   return (
                     <button
                       key={event.id}
-                      className={`flex flex-col gap-4 text-left w-full transition-opacity ${
-                        isSelected ? 'opacity-100' : 'opacity-60 hover:opacity-100'
-                      }`}
+                      className="flex flex-col gap-4 text-left w-full -mx-2 -my-1.5 px-2 py-1.5 transition-colors hover:bg-foreground-secondary/[0.06]"
                       onClick={() => onSelectEvent(event)}
                     >
                       <div className="relative w-full h-[224px] overflow-hidden">
@@ -75,7 +72,7 @@ export function DayListPanel({ events, selectedEventId, onSelectEvent }: DayList
                       </div>
                       <div className="flex flex-col gap-1">
                         <p
-                          className="text-[24px] font-bold text-[#dd4829] leading-tight"
+                          className="text-[32px] font-bold text-[#dd4829] leading-tight"
                           style={{ fontFamily: 'var(--font-cormorant)' }}
                         >
                           {artist?.name ?? event.title}

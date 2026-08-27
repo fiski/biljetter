@@ -14,6 +14,12 @@
         "value": "12px",
         "createdAt": "2026-08-27T13:37:03.644Z",
         "reason": "pre-existing event metadata size (venue/time), within DESIGN.md's documented Label 12-18px range"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "32px",
+        "createdAt": "2026-08-27T13:46:48.874Z",
+        "reason": "matches ListView.tsx's artist-name size (text-[32px]); within DESIGN.md's documented Headline 32-80px range"
       }
     ]
   }
