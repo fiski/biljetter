@@ -56,9 +56,25 @@ export function CalendarWrapper() {
   const { data: genres = [] } = useGenres()
   const { data: venues = [] } = useVenues()
 
-  const upcomingEvents = events
-    .filter((e) => new Date(e.startTime) >= new Date(new Date().setHours(0, 0, 0, 0)))
-    .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+  const todayStart = new Date(new Date().setHours(0, 0, 0, 0))
+  const byStartTime = (a: EventWithRelations, b: EventWithRelations) =>
+    new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+
+  const fromTodayOnward = (list: EventWithRelations[]) =>
+    list.filter((e) => new Date(e.startTime) >= todayStart).sort(byStartTime)
+
+  const isViewingCurrentMonth =
+    currentMonth.getFullYear() === todayStart.getFullYear() &&
+    currentMonth.getMonth() === todayStart.getMonth()
+
+  // Day-by-day list opens on today rather than the 1st. Only the current month is
+  // trimmed — past months stay fully browsable, future months start at day 1 anyway.
+  const listEvents = isViewingCurrentMonth
+    ? fromTodayOnward(events)
+    : [...events].sort(byStartTime)
+
+  // The drawer's day panel always looks forward from today.
+  const upcomingEvents = fromTodayOnward(events)
 
   return (
     <>
@@ -81,7 +97,7 @@ export function CalendarWrapper() {
       </div>
 
       {viewMode === 'list' ? (
-        <ListView events={events} onSelectEvent={setSelectedEvent} />
+        <ListView events={listEvents} onSelectEvent={setSelectedEvent} />
       ) : viewMode === 'grid' ? (
         <MasonryView events={events} onSelectEvent={setSelectedEvent} />
       ) : (
