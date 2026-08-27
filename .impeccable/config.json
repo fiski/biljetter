@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "34px",
+        "createdAt": "2026-08-27T13:37:03.596Z",
+        "reason": "pre-existing calendar day-number size, within DESIGN.md's documented Headline 32-80px range"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "12px",
+        "createdAt": "2026-08-27T13:37:03.644Z",
+        "reason": "pre-existing event metadata size (venue/time), within DESIGN.md's documented Label 12-18px range"
+      }
+    ]
+  }
+}

@@ -151,7 +151,11 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
                         return (
                           <div
                             key={event.id}
-                            className={onSelectEvent ? 'cursor-pointer hover:opacity-70 transition-opacity' : ''}
+                            className={
+                              onSelectEvent
+                                ? '-mx-2 -my-1.5 px-2 py-1.5 cursor-pointer transition-colors hover:bg-foreground-secondary/[0.06]'
+                                : ''
+                            }
                             onClick={() => onSelectEvent?.(event)}
                           >
                             <div className="text-[14px] font-semibold text-foreground leading-tight">
