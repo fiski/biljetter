@@ -1,0 +1,117 @@
+// ──────────────────────────────────────────────────────────────────────────
+// Biljetter — data contract
+//
+// This schema is the CONTRACT shared between this read-only web app and the
+// separate scraper repo that writes real Göteborg event data into the shared
+// Postgres database. Both sides must agree on it before the scraper is built.
+//
+// - This app reads from the DB only (never writes at request time).
+// - The scraper (separate repo) owns all writes, including Spotify enrichment
+//   of Artist rows (spotifyId / imageUrl / spotifyListeners / *Url fields).
+// ──────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String?     @db.Text
+  startTime   DateTime
+  endTime     DateTime
+  status      EventStatus @default(UPCOMING)
+
+  venue   Venue  @relation(fields: [venueId], references: [id])
+  venueId String
+
+  artists EventArtist[]
+  genres  EventGenre[]
+
+  ticketUrl        String?
+  imageUrl         String?
+  spotifyListeners Int?
+  price            String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startTime])
+  @@index([venueId])
+  @@index([status])
+}
+
+model Venue {
+  id         String  @id @default(cuid())
+  name       String
+  slug       String  @unique
+  address    String
+  city       String
+  capacity   Int?
+  lat        Float?
+  lng        Float?
+  websiteUrl String?
+
+  events Event[]
+
+  @@index([city])
+}
+
+model Artist {
+  id               String  @id @default(cuid())
+  name             String
+  slug             String  @unique
+  // Spotify enrichment fields — populated by the scraper/pipeline, read here.
+  spotifyId        String? @unique
+  imageUrl         String?
+  bio              String? @db.Text
+  spotifyListeners Int?
+  spotifyUrl       String?
+  instagramUrl     String?
+  websiteUrl       String?
+
+  events EventArtist[]
+}
+
+model Genre {
+  id    String  @id @default(cuid())
+  name  String
+  slug  String  @unique
+  color String?
+
+  events EventGenre[]
+}
+
+model EventArtist {
+  event    Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId  String
+  artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId String
+  order    Int    @default(0)
+
+  @@id([eventId, artistId])
+  @@index([artistId])
+}
+
+model EventGenre {
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+  genreId String
+
+  @@id([eventId, genreId])
+  @@index([genreId])
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  PAST
+  CANCELLED
+}

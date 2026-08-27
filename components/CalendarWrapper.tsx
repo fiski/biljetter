@@ -12,8 +12,8 @@ import { ViewToggle } from './layout/ViewToggle'
 import { MonthHeader } from './calendar/MonthHeader'
 import { SearchControl } from './search/SearchControl'
 import { useFilterStore } from '@/lib/stores/filterStore'
-import { useEvents } from '@/lib/hooks/useEvents'
-import { mockEvents, mockGenres, mockVenues } from '@/lib/data/mockEvents'
+import { useEvents, useAllEvents } from '@/lib/hooks/useEvents'
+import { useGenres, useVenues } from '@/lib/hooks/useFilters'
 
 export type ViewMode = 'list' | 'calendar' | 'grid'
 
@@ -52,6 +52,10 @@ export function CalendarWrapper() {
     venue: selectedVenue,
   })
 
+  const { data: allEvents = [] } = useAllEvents()
+  const { data: genres = [] } = useGenres()
+  const { data: venues = [] } = useVenues()
+
   const upcomingEvents = events
     .filter((e) => new Date(e.startTime) >= new Date(new Date().setHours(0, 0, 0, 0)))
     .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
@@ -59,15 +63,15 @@ export function CalendarWrapper() {
   return (
     <>
       {/* Global search — overlays everything, opens the event drawer on select */}
-      <SearchControl events={mockEvents} onSelectEvent={setSelectedEvent} />
+      <SearchControl events={allEvents} onSelectEvent={setSelectedEvent} />
 
       {/* Calendar — always rendered so it's visible under the drawer */}
       <MonthHeader currentMonth={currentMonth} onNavigate={navigateMonth} onResetToToday={resetToToday} />
 
       <div className="flex items-end justify-between mb-6">
         <FilterBar
-          genres={mockGenres}
-          venues={mockVenues}
+          genres={genres}
+          venues={venues}
           selectedGenre={selectedGenre}
           selectedVenue={selectedVenue}
           onGenreChange={setGenre}

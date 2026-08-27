@@ -63,12 +63,16 @@ biljetter/
 │   └── CalendarWrapper.tsx          # Top-level state container for views + events
 ├── lib/
 │   ├── data/
-│   │   └── mockEvents.ts            # 25 mock events with dynamic current-month dates
-│   ├── hooks/                       # (stub) useEvents.ts, useFilters.ts — not yet created
-│   ├── stores/                      # (stub) filterStore.ts — not yet created
+│   │   ├── mockEvents.ts            # Mock events (fallback source + seed source)
+│   │   └── repository.ts           # Data-access layer — DB-or-mock switch (see below)
+│   ├── hooks/                       # useEvents.ts (+ useAllEvents), useFilters.ts
+│   ├── stores/                      # filterStore.ts (Zustand)
+│   ├── prisma.ts                    # PrismaClient singleton (dev hot-reload guard)
 │   └── utils/
 │       └── cn.ts                    # classnames helper
-├── prisma/                          # (not yet created) schema.prisma, seed.ts
+├── prisma/
+│   ├── schema.prisma                # The scraper<->frontend data contract
+│   └── seed.ts                      # Seeds DB from mockEvents (idempotent)
 ├── public/
 │   └── images/artists/              # Artist image PNGs
 ├── types/
@@ -87,10 +91,10 @@ biljetter/
 | 2 | Calendar views (grid, list, masonry) | ✅ Complete |
 | 3 | Filtering (genre, venue, month nav) | ⚠️ UI exists — logic not wired |
 | 4 | List & detail views | ✅ Complete |
-| 4b | Frontend UI overhaul (Figma alignment) | 🔲 Next priority |
-| 5 | Database integration (Prisma + PostgreSQL) | 🔲 Not started |
-| 5b | Data pipeline (scraper — separate repo) | 🔲 Not started |
-| 6 | Spotify API enrichment | 🔲 Not started |
+| 4b | Frontend UI overhaul (Figma alignment) | ⚠️ In progress |
+| 5 | Database integration (Prisma + PostgreSQL) | ⚠️ Schema + data-access layer done; DB not yet provisioned (mock fallback active) |
+| 5b | Data pipeline (scraper — separate repo) | 🔲 Not started — contract (`prisma/schema.prisma`) ready |
+| 6 | Spotify API enrichment | 🔲 Not started — runs in scraper/pipeline repo, not here |
 | 7 | Search, loading states, mobile polish | 🔲 Not started |
 
 ---
@@ -411,7 +415,15 @@ Real event data comes from a **separate scraper project**, not this repo.
 
 ## Spotify API Integration
 
-### What to fetch
+> **Ownership: this is a WRITE-side feature and lives in the scraper/pipeline repo, NOT
+> in this app.** This app is read-only against the shared DB; Spotify enrichment populates
+> `Artist.spotifyId / imageUrl / spotifyListeners / spotifyUrl / instagramUrl / websiteUrl`,
+> which are *writes*. Keeping enrichment on the write side means no Spotify secrets or code
+> ship in the web app — it simply reads the already-enriched `Artist` fields. The
+> `prisma/schema.prisma` in this repo defines those fields as part of the contract so both
+> sides agree. Do **not** add `lib/spotify.ts` or `SPOTIFY_*` env vars to this repo.
+
+### What to fetch (reference for the scraper/pipeline repo)
 
 | Field | Spotify endpoint | Notes |
 |-------|-----------------|-------|
@@ -423,19 +435,13 @@ Real event data comes from a **separate scraper project**, not this repo.
 
 **Artist bio**: Not available from Spotify. Options: Wikipedia API (`/api/rest_v1/page/summary/{artist_name}`), manual entry, or skip bio for MVP.
 
-### Implementation approach
+### Implementation approach (in the scraper/pipeline repo)
 
 - Auth: **Client Credentials flow** (no user login needed)
-- Enrichment runs at **seed time** and on a **nightly sync job** — never per-request
-- Code lives in `lib/spotify.ts`:
-  ```typescript
-  // lib/spotify.ts
-  export async function getSpotifyToken(): Promise<string>
-  export async function searchArtist(name: string): Promise<SpotifyArtist | null>
-  export async function getArtist(spotifyId: string): Promise<SpotifyArtist>
-  ```
+- Enrichment runs at **seed/scrape time** and on a **nightly sync job** — never per-request,
+  and never inside this web app
 - Rate limit: 100 requests / 30s — well within seed limits
-- Env vars needed: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`
+- Env vars (`SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`) live in the scraper repo only
 
 ---
 
@@ -536,20 +542,36 @@ Use these in components with `style={{ background: 'var(--background)' }}` or vi
 
 ---
 
+## Data-access layer (the DB-or-mock switch)
+
+**All event/venue/genre reads go through `lib/data/repository.ts`** — never import
+`mockEvents` directly in routes, pages, or components. The repository decides the source:
+
+- `DATABASE_URL` set → query Postgres via Prisma (lazily imported), map rows to the
+  `EventWithRelations` shape (and lowercase the `EventStatus` enum to match `types/index.ts`).
+- `DATABASE_URL` unset → fall back to `mockEvents`. The app runs with zero DB setup.
+
+Public functions: `getEvents({ month?, genres?, venues? })`, `getEventBySlug(slug)`,
+`getAllVenues()`, `getAllGenres()` — all `async`. The frontend reads them via API routes
+(`/api/events`, `/api/venues`, `/api/genres`) using React Query hooks in `lib/hooks/`
+(`useEvents`, `useAllEvents`, `useGenres`, `useVenues`).
+
+This means: when the scraper populates the shared DB, set `DATABASE_URL` and the app serves
+real data with **no frontend changes**.
+
 ## API Routes
 
 ### Events (`app/api/events/route.ts`)
 
 ```typescript
 // GET /api/events?month=YYYY-MM&genres=rock,jazz&venues=pustervik
+// Validates query params with Zod (400 on bad input), then delegates to the
+// data-access layer — which serves Postgres or mock data depending on DATABASE_URL.
 export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl
-  const month = searchParams.get('month')
-  const genres = searchParams.get('genres')?.split(',').filter(Boolean) || []
-  const venues = searchParams.get('venues')?.split(',').filter(Boolean) || []
-
-  // Currently: filter mockEvents
-  // Phase 5: replace with Prisma query
+  const params = Object.fromEntries(request.nextUrl.searchParams)
+  const parsed = querySchema.safeParse(params)
+  if (!parsed.success) return NextResponse.json({ error: ... }, { status: 400 })
+  return NextResponse.json(await getEvents({ ...parsed.data }))
 }
 ```
 

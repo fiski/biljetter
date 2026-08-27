@@ -45,9 +45,8 @@ yarn-error.log*
 next-env.d.ts
 
 # Prisma
-# Don't ignore schema, but ignore generated client
-prisma/migrations/**/migration.sql
-.env
+# Commit schema AND migrations (they're the scraper<->frontend contract).
+# The generated client lives in node_modules and is already ignored.
 
 # Optional: Prisma Studio
 .prisma/

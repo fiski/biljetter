@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getEventBySlug } from '@/lib/data/mockEvents'
+import { getEventBySlug } from '@/lib/data/repository'
 
 interface EventPageProps {
   params: Promise<{ slug: string }>
@@ -8,7 +8,7 @@ interface EventPageProps {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params
-  const event = getEventBySlug(slug)
+  const event = await getEventBySlug(slug)
 
   if (!event) {
     notFound()

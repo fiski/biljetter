@@ -24,3 +24,16 @@ export function useEvents({ monthMs, genre, venue }: UseEventsOptions) {
     },
   })
 }
+
+/** All events, unfiltered — used by global search. */
+export function useAllEvents() {
+  return useQuery({
+    queryKey: ['events', 'all'],
+    queryFn: async () => {
+      const res = await fetch('/api/events')
+      if (!res.ok) throw new Error('Failed to fetch events')
+      return res.json() as Promise<EventWithRelations[]>
+    },
+    staleTime: 5 * 60 * 1000,
+  })
+}

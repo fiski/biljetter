@@ -1,33 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { mockEvents } from '@/lib/data/mockEvents'
+import { z } from 'zod'
+import { getEvents } from '@/lib/data/repository'
+
+const querySchema = z.object({
+  month: z
+    .string()
+    .regex(/^\d{4}-\d{2}$/, 'month must be in YYYY-MM format')
+    .optional(),
+  genres: z.string().optional(),
+  venues: z.string().optional(),
+})
+
+const splitCsv = (value?: string) =>
+  value?.split(',').map((s) => s.trim()).filter(Boolean) ?? []
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams
-  const month = searchParams.get('month')
-  const genres = searchParams.get('genres')?.split(',').filter(Boolean) || []
-  const venues = searchParams.get('venues')?.split(',').filter(Boolean) || []
+  const params = Object.fromEntries(request.nextUrl.searchParams)
+  const parsed = querySchema.safeParse(params)
 
-  let filteredEvents = [...mockEvents]
-
-  if (month) {
-    const [yearNum, monthNum] = month.split('-').map(Number)
-    filteredEvents = filteredEvents.filter((event) => {
-      const start = new Date(event.startTime)
-      return start.getFullYear() === yearNum && start.getMonth() === monthNum - 1
-    })
-  }
-
-  if (genres.length > 0) {
-    filteredEvents = filteredEvents.filter((event) =>
-      event.genres.some((genre) => genres.includes(genre.slug))
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Invalid query parameters', details: parsed.error.flatten() },
+      { status: 400 }
     )
   }
 
-  if (venues.length > 0) {
-    filteredEvents = filteredEvents.filter((event) =>
-      venues.includes(event.venue.slug)
-    )
-  }
+  const events = await getEvents({
+    month: parsed.data.month,
+    genres: splitCsv(parsed.data.genres),
+    venues: splitCsv(parsed.data.venues),
+  })
 
-  return NextResponse.json(filteredEvents)
+  return NextResponse.json(events)
 }
