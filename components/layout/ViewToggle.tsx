@@ -45,7 +45,7 @@ export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
                   // relative z-10 keeps the accent border on top of the neighbouring
                   // button's ink border, which the -mr-px overlap would otherwise paint over
                   ? 'relative z-10 bg-accent-bg border-accent text-accent'
-                  : 'border-foreground text-foreground hover:text-accent',
+                  : 'border-foreground text-foreground hover:bg-foreground/8 hover:text-accent',
               ].join(' ')}
             >
               <Icon size={24} strokeWidth={1.5} />

@@ -166,7 +166,7 @@ Sharp rectangles by default — buttons, filter selects, calendar cells, list im
 - **Primary (solid):** Ink (`#0F0F0F`) background, Newsprint Cream text, Crimson Text 600 16px, capitalize, generous padding (`11px 42px`). Used for the main "Biljetter" CTA at the top of the event drawer.
 - **Secondary (outline):** Transparent background, 1px ink border, same type. On hover, inverts to filled ink/cream — used for the repeated "Biljetter" CTA in list cards and the bottom of the event drawer.
 - **Ghost/icon:** Plain icon with color-only hover (foreground → accent, plus a faint background tint on press) — month-navigation arrows, search icon, drawer close.
-- **Toggle group (view switcher):** Bordered squares in a connected row; active state is Dusty Blush fill + Poster Red-Orange border/icon — a tint, not a solid fill, distinguishing "selected" from "hovered."
+- **Toggle group (view switcher):** Bordered squares in a connected row; active state is Dusty Blush fill + Poster Red-Orange border/icon — a tint, not a solid fill, distinguishing "selected" from "hovered." Hover on an unselected square adds a neutral ink wash (`bg-foreground/8`, the same tint the month-nav arrows use): roughly half the contrast of the active fill, and neutral rather than warm, so a hovered square never reads as a selected one. The selected square has no hover state — clicking it is a no-op, and the absence of feedback is itself the signal.
 
 ### Chips
 - **Style:** Border-only pill (22px radius), ink text on cream, hover inverts to filled ink/cream. Used for "popular searches" in the search popover.
