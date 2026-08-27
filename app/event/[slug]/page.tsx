@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getEventBySlug } from '@/lib/data/repository'
+import { SpotifyEmbed } from '@/components/ui/SpotifyEmbed'
 
 interface EventPageProps {
   params: Promise<{ slug: string }>
@@ -39,6 +40,10 @@ export default async function EventPage({ params }: EventPageProps) {
         <p className="capitalize">{date}</p>
         <p>{startTime} – {endTime}</p>
         <p>{event.venue.name} — {event.venue.address}, {event.venue.city}</p>
+      </div>
+
+      <div className="mb-8">
+        <SpotifyEmbed artist={event.artists[0]} />
       </div>
 
       {event.spotifyListeners && (

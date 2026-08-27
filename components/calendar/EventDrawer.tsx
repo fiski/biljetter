@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
+import { SpotifyEmbed } from '@/components/ui/SpotifyEmbed'
 
 function SpotifyIcon() {
   return (
@@ -103,7 +104,7 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
         </div>
 
         {/* Spotify + Biljetter */}
-        <div className="flex items-center justify-between mb-12">
+        <div className="flex items-center justify-between mb-8">
           <a
             href={spotifyHref}
             target="_blank"
@@ -131,6 +132,11 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
               Biljetter
             </span>
           </a>
+        </div>
+
+        {/* Spotify embed */}
+        <div className="mb-6">
+          <SpotifyEmbed artist={artist} />
         </div>
 
         {/* Description with drop cap */}
