@@ -81,7 +81,7 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
                 type="button"
                 onClick={() => onQueryChange(term)}
                 style={mono}
-                className="border border-foreground rounded-[22px] px-4 py-2 text-[16px] text-foreground hover:bg-foreground hover:text-background transition-colors"
+                className="border border-foreground rounded-[22px] px-4 py-2 text-[16px] text-foreground hover:bg-foreground hover:text-background transition-colors cursor-pointer"
               >
                 {term}
               </button>
@@ -100,7 +100,7 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
                 key={event.id}
                 type="button"
                 onClick={() => onSelectEvent(event)}
-                className="flex flex-col gap-4 w-full text-left group pt-4 first:pt-0"
+                className="flex flex-col gap-4 w-full text-left group pt-4 first:pt-0 cursor-pointer"
               >
                 <div className="flex gap-8 items-start">
                   <div className="size-[98px] shrink-0 overflow-hidden bg-foreground-secondary/10">

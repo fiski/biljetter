@@ -55,7 +55,7 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
                   return (
                     <button
                       key={event.id}
-                      className="flex flex-col gap-4 text-left w-full -mx-2 -my-1.5 px-2 py-1.5 transition-colors hover:bg-foreground-secondary/[0.06]"
+                      className="flex flex-col gap-4 text-left w-full -mx-2 -my-1.5 px-2 py-1.5 transition-colors hover:bg-foreground-secondary/[0.06] cursor-pointer"
                       onClick={() => onSelectEvent(event)}
                     >
                       <div className="relative w-full h-[224px] overflow-hidden">

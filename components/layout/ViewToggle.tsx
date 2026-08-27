@@ -23,7 +23,7 @@ export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
       <button
         type="button"
         onClick={toggleGrain}
-        className="border border-foreground h-10 flex items-center justify-center px-4 text-[11px] font-montserrat font-semibold uppercase tracking-widest transition-colors hover:text-accent"
+        className="border border-foreground h-10 flex items-center justify-center px-4 text-[11px] font-montserrat font-semibold uppercase tracking-widest transition-colors hover:text-accent cursor-pointer"
         style={{ fontFamily: 'var(--font-montserrat)' }}
       >
         {grainPaused ? 'Spela animationer' : 'Pausa animationer'}
@@ -39,7 +39,7 @@ export function ViewToggle({ viewMode, onViewChange }: ViewToggleProps) {
               onClick={() => onViewChange(mode)}
               aria-label={label}
               className={[
-                'border border-foreground h-10 flex items-center justify-center px-8 py-2.5 transition-colors',
+                'border border-foreground h-10 flex items-center justify-center px-8 py-2.5 transition-colors cursor-pointer',
                 i < BUTTONS.length - 1 ? '-mr-px' : '',
                 isActive
                   ? 'bg-accent-bg border-accent text-accent'

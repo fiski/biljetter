@@ -32,7 +32,7 @@ export function FilterBar({
             value={selectedGenre}
             onChange={(e) => onGenreChange(e.target.value)}
             style={monoStyle}
-            className="appearance-none bg-background border border-foreground px-4 py-2 text-[16px] text-foreground pr-10 min-w-[200px]"
+            className="appearance-none bg-background border border-foreground px-4 py-2 text-[16px] text-foreground pr-10 min-w-[200px] cursor-pointer"
           >
             <option value="">All musik</option>
             {genres.map((genre) => (
@@ -53,7 +53,7 @@ export function FilterBar({
             value={selectedVenue}
             onChange={(e) => onVenueChange(e.target.value)}
             style={monoStyle}
-            className="appearance-none bg-background border border-foreground px-4 py-2 text-[16px] text-foreground pr-10 min-w-[280px]"
+            className="appearance-none bg-background border border-foreground px-4 py-2 text-[16px] text-foreground pr-10 min-w-[280px] cursor-pointer"
           >
             <option value="">Alla platser</option>
             {venues.map((venue) => (
