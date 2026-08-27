@@ -10,6 +10,13 @@ A Swedish concert/event calendar application with a clean, editorial design. Use
 
 ---
 
+## Git & Commit Conventions
+
+- Claude is **not** an author of commits in this repo. Do not add `Co-Authored-By: Claude` (or any similar attribution line) to commit messages, and do not list Claude as the commit author.
+- Commits should be attributed solely to the human developer making the request.
+
+---
+
 ## Tech Stack
 
 ### Frontend
