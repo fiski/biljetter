@@ -55,11 +55,14 @@ function formatTime(date: Date): string {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })
 }
 
-function WeekSeparator() {
+function WeekSeparator({ hiddenColumn }: { hiddenColumn?: number }) {
   return (
     <div className="flex gap-6">
       {Array.from({ length: 7 }).map((_, i) => (
-        <div key={i} className="flex-1 h-[2px] bg-foreground-secondary" />
+        <div
+          key={i}
+          className={`flex-1 h-[2px] ${i === hiddenColumn ? '' : 'bg-foreground-secondary'}`}
+        />
       ))}
     </div>
   )
@@ -84,6 +87,10 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
     eventsByDate.set(key, existing)
   }
 
+  const todayIndex = calendarDays.findIndex((day) => isSameDay(day.date, now))
+  const todayWeek = todayIndex === -1 ? -1 : Math.floor(todayIndex / 7)
+  const todayColumn = todayIndex === -1 ? -1 : todayIndex % 7
+
   const weeks: CalendarDay[][] = []
   for (let i = 0; i < calendarDays.length; i += 7) {
     weeks.push(calendarDays.slice(i, i + 7))
@@ -106,12 +113,18 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
       </div>
 
       {/* Separator after headers */}
-      <WeekSeparator />
+      <WeekSeparator hiddenColumn={todayWeek === 0 ? todayColumn : undefined} />
 
       {/* Week rows */}
       {weeks.map((week, weekIndex) => (
         <div key={weekIndex}>
-          {weekIndex > 0 && <WeekSeparator />}
+          {weekIndex > 0 && (
+            <WeekSeparator
+              hiddenColumn={
+                todayWeek === weekIndex || todayWeek === weekIndex - 1 ? todayColumn : undefined
+              }
+            />
+          )}
           <div className="grid grid-cols-7">
             {week.map((day) => {
               const dateKey = `${day.date.getFullYear()}-${day.date.getMonth()}-${day.date.getDate()}`
@@ -122,24 +135,20 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
               return (
                 <div
                   key={dateKey}
-                  className={`min-h-[150px] p-4 ${!day.isCurrentMonth ? 'opacity-40' : ''}`}
+                  className={`min-h-[150px] p-4 ${!day.isCurrentMonth ? 'opacity-40' : ''} ${
+                    isToday ? 'bg-accent/[0.07] border-2 border-accent' : ''
+                  }`}
+                  /* Pull the frame out so its stroke lands on the week rules: 2px for the
+                     rule band itself, plus 2px because a CSS border paints inside the box. */
+                  style={isToday ? { marginTop: '-4px', marginBottom: '-4px' } : undefined}
                 >
                   {/* Day number */}
                   <div
                     className={`text-[34px] font-bold leading-tight ${
-                      isSaturday ? 'text-accent' : 'text-foreground-secondary'
+                      isToday || isSaturday ? 'text-accent' : 'text-foreground-secondary'
                     }`}
                   >
-                    {isToday ? (
-                      <span
-                        className="inline-block border border-accent rounded-[50%] px-2"
-                        style={{ lineHeight: '1.2' }}
-                      >
-                        {String(day.date.getDate()).padStart(2, '0')}
-                      </span>
-                    ) : (
-                      String(day.date.getDate()).padStart(2, '0')
-                    )}
+                    {String(day.date.getDate()).padStart(2, '0')}
                   </div>
 
                   {/* Events */}
