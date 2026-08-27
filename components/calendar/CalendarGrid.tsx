@@ -96,7 +96,7 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
         {DAY_HEADERS.map((day, i) => (
           <div
             key={day}
-            className={`py-3 text-[14px] font-semibold uppercase tracking-tight ${
+            className={`px-4 py-3 text-[14px] font-semibold uppercase tracking-tight ${
               i === 5 ? 'text-accent' : 'text-foreground-secondary'
             }`}
           >
