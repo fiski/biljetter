@@ -135,7 +135,7 @@ export function CalendarGrid({ events, currentMonth, onSelectEvent }: CalendarGr
               return (
                 <div
                   key={dateKey}
-                  className={`min-h-[150px] p-4 ${!day.isCurrentMonth ? 'opacity-40' : ''} ${
+                  className={`min-h-[180px] p-4 ${!day.isCurrentMonth ? 'opacity-40' : ''} ${
                     isToday ? 'bg-accent/[0.07] border-2 border-accent' : ''
                   }`}
                   /* Pull the frame out so its stroke lands on the week rules: 2px for the
