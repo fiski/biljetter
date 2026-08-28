@@ -32,24 +32,6 @@ export const mockVenues: Venue[] = [
     capacity: 1200,
     coordinates: { lat: 57.701, lng: 11.965 },
   },
-  {
-    id: 'v4',
-    name: 'Haga Lekplats',
-    slug: 'haga-lekplats',
-    address: 'Haga Nygata 13',
-    city: 'Göteborg',
-    capacity: 150,
-    coordinates: { lat: 57.699, lng: 11.956 },
-  },
-  {
-    id: 'v5',
-    name: 'Farm',
-    slug: 'farm',
-    address: 'Kungsgatan 12',
-    city: 'Göteborg',
-    capacity: 200,
-    coordinates: { lat: 57.704, lng: 11.973 },
-  },
 ]
 
 // ── Genres ───────────────────────────────────────────────────────────────────

@@ -21,7 +21,7 @@ The differentiator is editorial curation and design: a single, unified, well-des
 ## Operating Context
 
 - Real event data comes from a **separate scraper project**, not this repo. This app is read-only against a shared PostgreSQL database via Prisma; the Prisma schema is the contract between scraper and frontend.
-- Göteborg venues in scope: Pustervik, Nefertiti, Trädgårn, Sticky Fingers, Röda Sten, Haga Lekplats, Farm, Musikens Hus, Way Out West (festival).
+- Göteborg venues in scope: Pustervik, Nefertiti, Trädgårn, Sticky Fingers, Musikens Hus, Way Out West (festival).
 - Spotify Web API enrichment (artist images, follower counts) runs at seed time / nightly sync, never per-request.
 
 ## Capabilities and Constraints

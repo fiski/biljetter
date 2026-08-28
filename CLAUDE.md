@@ -410,7 +410,7 @@ Real event data comes from a **separate scraper project**, not this repo.
                                Next.js API routes → Frontend
 ```
 
-**Göteborg venues to scrape**: Pustervik, Nefertiti, Trädgårn, Sticky Fingers, Röda Sten, Haga Lekplats, Farm, Musikens Hus, Way Out West (festival)
+**Göteborg venues to scrape**: Pustervik, Nefertiti, Trädgårn, Sticky Fingers, Musikens Hus, Way Out West (festival)
 
 **Rules for this repo**:
 - Zero scraping code lives here
