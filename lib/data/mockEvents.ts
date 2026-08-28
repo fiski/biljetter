@@ -47,6 +47,8 @@ export const mockGenres: Genre[] = [
   { id: 'g8',  name: 'Soul',       slug: 'soul',       color: '#C0392B' },
   { id: 'g9',  name: 'Country',    slug: 'country',    color: '#D4AC0D' },
   { id: 'g10', name: 'Övrigt',     slug: 'ovrigt',     color: '#808080' },
+  // Appended, not inserted: the destructuring below is positional.
+  { id: 'g11', name: 'Pop',        slug: 'pop',        color: '#E84393' },
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────────
