@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { EventWithRelations } from '@/types'
 import { formatSwedishShortDate } from '@/lib/utils/formatDate'
+import { eventImage } from '@/lib/utils/eventImage'
 
 const mono = { fontFamily: 'var(--font-ibm-plex-mono)' }
 
@@ -95,6 +96,7 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
         <div className="flex flex-col w-full pt-4 max-h-[340px] overflow-y-auto search-scroll">
           {matches.map((event, i) => {
             const artist = event.artists[0]
+            const image = eventImage(event)
             return (
               <button
                 key={event.id}
@@ -104,10 +106,11 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
               >
                 <div className="flex gap-8 items-start">
                   <div className="size-[98px] shrink-0 overflow-hidden bg-foreground-secondary/10">
-                    {artist?.imageUrl && (
+                    {image && (
                       <img
-                        src={artist.imageUrl}
-                        alt={artist.name}
+                        src={image.src}
+                        alt={image.alt}
+                        loading="lazy"
                         className="size-full object-cover group-hover:opacity-80 transition-opacity"
                       />
                     )}

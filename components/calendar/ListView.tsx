@@ -3,6 +3,7 @@
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
 import { SWEDISH_MONTHS } from '@/lib/utils/formatDate'
+import { eventImage } from '@/lib/utils/eventImage'
 
 const SWEDISH_WEEKDAYS = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag']
 
@@ -20,6 +21,7 @@ function SpotifyIcon() {
 
 function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSelectEvent?: (e: EventWithRelations) => void }) {
   const artist = event.artists[0]
+  const image = eventImage(event)
   const start = new Date(event.startTime)
   const end = new Date(event.endTime)
   const listeners = artist?.spotifyListeners ?? event.spotifyListeners
@@ -36,10 +38,11 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
         onClick={() => onSelectEvent?.(event)}
         aria-label={`Visa detaljer för ${artist?.name ?? event.title}`}
       >
-        {artist?.imageUrl && (
+        {image && (
           <img
-            src={artist.imageUrl}
-            alt={artist.name}
+            src={image.src}
+            alt={image.alt}
+            loading="lazy"
             className="w-full h-full object-cover"
           />
         )}

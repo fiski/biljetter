@@ -3,6 +3,7 @@
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
 import { SWEDISH_MONTHS } from '@/lib/utils/formatDate'
+import { eventImage } from '@/lib/utils/eventImage'
 
 // Height pattern (px) — cycles across all cards for organic bento feel
 const CARD_HEIGHTS = [320, 200, 380, 240, 280, 160, 360, 220, 300, 180, 400, 200]
@@ -17,6 +18,7 @@ function MasonryCard({
   onSelectEvent?: (event: EventWithRelations) => void
 }) {
   const artist = event.artists[0]
+  const image = eventImage(event)
   const date = new Date(event.startTime)
   const dateStr = `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]}`
 
@@ -27,10 +29,11 @@ function MasonryCard({
       onClick={() => onSelectEvent?.(event)}
     >
       {/* Background image */}
-      {artist?.imageUrl ? (
+      {image ? (
         <img
-          src={artist.imageUrl}
-          alt={artist.name}
+          src={image.src}
+          alt={image.alt}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       ) : (

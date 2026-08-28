@@ -3,6 +3,7 @@
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
 import { SWEDISH_MONTHS } from '@/lib/utils/formatDate'
+import { eventImage } from '@/lib/utils/eventImage'
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })
@@ -49,6 +50,7 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
               <div className="flex flex-col gap-6">
                 {dayEvents.map((event) => {
                   const artist = event.artists[0]
+                  const image = eventImage(event)
                   const start = new Date(event.startTime)
                   const end = new Date(event.endTime)
 
@@ -59,10 +61,11 @@ export function DayListPanel({ events, onSelectEvent }: DayListPanelProps) {
                       onClick={() => onSelectEvent(event)}
                     >
                       <div className="relative w-full h-[264px] overflow-hidden">
-                        {artist?.imageUrl ? (
+                        {image ? (
                           <img
-                            src={artist.imageUrl}
-                            alt={artist.name}
+                            src={image.src}
+                            alt={image.alt}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                           />
                         ) : (

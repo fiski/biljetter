@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { EventWithRelations } from '@/types'
 import { GrainOverlay } from '@/components/ui/GrainOverlay'
 import { SpotifyEmbed } from '@/components/ui/SpotifyEmbed'
+import { eventImage } from '@/lib/utils/eventImage'
 
 function SpotifyIcon() {
   return (
@@ -25,6 +26,7 @@ interface EventDrawerProps {
 
 export function EventDrawer({ event, onClose }: EventDrawerProps) {
   const artist = event.artists[0]
+  const image = eventImage(event)
   const start = new Date(event.startTime)
   const end = new Date(event.endTime)
   const listeners = artist?.spotifyListeners ?? event.spotifyListeners
@@ -93,10 +95,10 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
 
         {/* Artist photo */}
         <div className="relative w-full h-[360px] overflow-hidden mb-4 bg-[#363447]/10">
-          {artist?.imageUrl && (
+          {image && (
             <img
-              src={artist.imageUrl}
-              alt={artist.name}
+              src={image.src}
+              alt={image.alt}
               className="w-full h-full object-cover"
             />
           )}
