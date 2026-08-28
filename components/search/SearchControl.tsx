@@ -66,7 +66,9 @@ export function SearchControl({ events, onSelectEvent }: SearchControlProps) {
         aria-label="Sök"
         aria-expanded={open}
         onClick={() => (open ? close() : setOpen(true))}
-        className="fixed left-10 top-20 z-50 text-foreground hover:text-accent transition-colors cursor-pointer"
+        className={`fixed left-7 top-[68px] z-50 flex h-12 w-12 items-center justify-center hover:bg-foreground/8 text-foreground hover:text-accent transition-colors cursor-pointer ${
+          open ? 'bg-foreground/8' : ''
+        }`}
       >
         <Search size={24} strokeWidth={1.5} />
       </button>
