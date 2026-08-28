@@ -103,6 +103,14 @@ project's real complexity is.
 
 **`emit`** — write `events.json` to a configured path in the `biljetter` repo.
 
+**Venue filtering happens between `fetch` and `parse`, not in `normalize`.** The
+listing page already names the venue, so events outside the four in-scope venues
+are dropped before their detail pages are requested. That turns roughly 800
+detail requests into well under a hundred — a meaningful difference at a
+mandatory 2s delay, and the politer way to treat a site we are about to ask for
+API access. The counts from that pre-filter are merged back into the run report,
+so it still accounts for every event the city listing offered.
+
 ### Normalization rules
 
 **Venue canonicalization.** Tickster venue records are free text per organizer, so

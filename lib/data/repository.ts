@@ -2,11 +2,11 @@ import type { Prisma } from '@prisma/client'
 import type { Artist, Event, EventWithRelations, Genre, Venue } from '@/types'
 import {
   mockEvents,
-  getEventsByMonth as mockEventsByMonth,
   getEventBySlug as mockEventBySlug,
   getAllVenues as mockGetAllVenues,
   getAllGenres as mockGetAllGenres,
 } from './mockEvents'
+import { loadScrapedEvents } from './scrapedEvents'
 
 // ──────────────────────────────────────────────────────────────────────────
 // Data-access layer
@@ -147,11 +147,17 @@ export async function getEvents(
     return rows.map(mapEvent)
   }
 
-  // Mock fallback — mirror the same filtering semantics.
-  let result = month
-    ? mockEventsByMonth(Number(month.split('-')[0]), Number(month.split('-')[1]))
-    : [...mockEvents]
+  // File fallback — real scraped events when present, else mock data.
+  const scraped = loadScrapedEvents()
+  let result = scraped ?? [...mockEvents]
 
+  if (month) {
+    const [year, monthNum] = month.split('-').map(Number)
+    result = result.filter(
+      (e) =>
+        e.startTime.getFullYear() === year && e.startTime.getMonth() === monthNum - 1
+    )
+  }
   if (genres?.length) {
     result = result.filter((e) => e.genres.some((g) => genres.includes(g.slug)))
   }
@@ -172,6 +178,8 @@ export async function getEventBySlug(
     })
     return row ? mapEvent(row) : null
   }
+  const scraped = loadScrapedEvents()
+  if (scraped) return scraped.find((e) => e.slug === slug) ?? null
   return mockEventBySlug(slug) ?? null
 }
 
@@ -181,6 +189,13 @@ export async function getAllVenues(): Promise<Venue[]> {
     const rows = await prisma.venue.findMany({ orderBy: { name: 'asc' } })
     return rows.map(mapVenue)
   }
+  // Derived from the events themselves, so the filter only ever offers venues
+  // that have something behind them.
+  const scraped = loadScrapedEvents()
+  if (scraped) {
+    const bySlug = new Map(scraped.map((e) => [e.venue.slug, e.venue]))
+    return [...bySlug.values()].sort((a, b) => a.name.localeCompare(b.name, 'sv'))
+  }
   return mockGetAllVenues()
 }
 
@@ -189,6 +204,13 @@ export async function getAllGenres(): Promise<Genre[]> {
     const prisma = await getPrisma()
     const rows = await prisma.genre.findMany({ orderBy: { name: 'asc' } })
     return rows.map(mapGenre)
+  }
+  const scraped = loadScrapedEvents()
+  if (scraped) {
+    const bySlug = new Map(
+      scraped.flatMap((e) => e.genres.map((g) => [g.slug, g] as const))
+    )
+    return [...bySlug.values()].sort((a, b) => a.name.localeCompare(b.name, 'sv'))
   }
   return mockGetAllGenres()
 }
