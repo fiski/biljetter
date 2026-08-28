@@ -100,7 +100,7 @@ biljetter/
 | 4 | List & detail views | ✅ Complete |
 | 4b | Frontend UI overhaul (Figma alignment) | ⚠️ In progress |
 | 5 | Database integration (Prisma + PostgreSQL) | ⚠️ Schema + data-access layer done; DB not yet provisioned (mock fallback active) |
-| 5b | Data pipeline (scraper — separate repo) | 🔲 Not started — contract (`prisma/schema.prisma`) ready |
+| 5b | Data pipeline (scraper — separate repo) | ✅ Tickster scraper shipping real data — see `../biljetter-scraper` |
 | 6 | Spotify API enrichment | 🔲 Not started — runs in scraper/pipeline repo, not here |
 | 7 | Search, loading states, mobile polish | 🔲 Not started |
 
@@ -556,7 +556,12 @@ Use these in components with `style={{ background: 'var(--background)' }}` or vi
 
 - `DATABASE_URL` set → query Postgres via Prisma (lazily imported), map rows to the
   `EventWithRelations` shape (and lowercase the `EventStatus` enum to match `types/index.ts`).
-- `DATABASE_URL` unset → fall back to `mockEvents`. The app runs with zero DB setup.
+- else `lib/data/events.json` present → real Göteborg events scraped from Tickster by the
+  sibling `biljetter-scraper` repo, revived from ISO strings by `lib/data/scrapedEvents.ts`.
+- else → fall back to `mockEvents`. The app runs with zero DB setup and zero scraped data.
+
+`getAllVenues()` and `getAllGenres()` derive their options from the events themselves when
+serving scraped data, so the filters never offer a value with nothing behind it.
 
 Public functions: `getEvents({ month?, genres?, venues? })`, `getEventBySlug(slug)`,
 `getAllVenues()`, `getAllGenres()` — all `async`. The frontend reads them via API routes

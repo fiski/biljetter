@@ -33,7 +33,8 @@ The differentiator is editorial curation and design: a single, unified, well-des
 
 ## Evidence on Hand
 
-- No real event data yet. `lib/data/mockEvents.ts` holds 25 mock events with dynamically generated current-month dates; this is the only data source until the scraper (separate repo, Phase 5/5b) ships. Future work must not present mock data as real and must not fabricate venue/artist facts beyond the venue list above.
+- Real event data is live: `lib/data/events.json` holds 227 real Göteborg concerts (Aug 2026 – May 2027) across Pustervik, Nefertiti, Trädgår'n and Musikens Hus, scraped from Tickster by the sibling `biljetter-scraper` repo. `lib/data/mockEvents.ts` remains as the fallback when that file is absent. Future work must not present mock data as real and must not fabricate venue/artist facts beyond the venue list above.
+- Known gaps in the real data: Tickster exposes no ticket price and no cancellation status, and roughly a quarter of events carry no genre tag (those land in "Övrigt"). Only about a fifth carry a structured lineup; the rest use the event title as the artist name.
 
 ## Product Principles
 
