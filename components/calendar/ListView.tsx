@@ -38,13 +38,22 @@ function EventCard({ event, onSelectEvent }: { event: EventWithRelations; onSele
         onClick={() => onSelectEvent?.(event)}
         aria-label={`Visa detaljer för ${artist?.name ?? event.title}`}
       >
-        {image && (
+        {image ? (
           <img
             src={image.src}
             alt={image.alt}
             loading="lazy"
             className="w-full h-full object-cover"
           />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center px-8">
+            <span
+              className="text-[13px] uppercase tracking-[0.2em] text-foreground-secondary/50 text-center"
+              style={{ fontFamily: 'var(--font-montserrat)' }}
+            >
+              {event.title}
+            </span>
+          </div>
         )}
         <GrainOverlay />
       </button>

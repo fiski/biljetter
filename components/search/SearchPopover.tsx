@@ -106,13 +106,22 @@ export function SearchPopover({ events, query, onQueryChange, onSelectEvent }: S
               >
                 <div className="flex gap-8 items-start">
                   <div className="size-[98px] shrink-0 overflow-hidden bg-foreground-secondary/10">
-                    {image && (
+                    {image ? (
                       <img
                         src={image.src}
                         alt={image.alt}
                         loading="lazy"
                         className="size-full object-cover group-hover:opacity-80 transition-opacity"
                       />
+                    ) : (
+                      <div className="size-full flex items-center justify-center px-2">
+                        <span
+                          style={mono}
+                          className="text-[10px] leading-[1.3] uppercase tracking-wide text-foreground-secondary/60 text-center break-words line-clamp-4"
+                        >
+                          {event.title}
+                        </span>
+                      </div>
                     )}
                   </div>
                   <div style={mono} className="flex flex-col gap-[10px] items-start pt-4 min-w-0">

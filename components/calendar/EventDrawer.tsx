@@ -95,12 +95,21 @@ export function EventDrawer({ event, onClose }: EventDrawerProps) {
 
         {/* Artist photo */}
         <div className="relative w-full h-[360px] overflow-hidden mb-4 bg-[#363447]/10">
-          {image && (
+          {image ? (
             <img
               src={image.src}
               alt={image.alt}
               className="w-full h-full object-cover"
             />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center px-10">
+              <span
+                className="text-[13px] uppercase tracking-[0.2em] text-[#363447]/50 text-center"
+                style={{ fontFamily: 'var(--font-montserrat)' }}
+              >
+                {event.title}
+              </span>
+            </div>
           )}
           <GrainOverlay />
         </div>
