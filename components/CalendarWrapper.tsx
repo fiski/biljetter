@@ -124,7 +124,7 @@ export function CalendarWrapper() {
         >
           {/* Day list panel — wide screens only */}
           <div
-            className="hidden min-[1440px]:flex flex-col w-[408px] h-[85vh] overflow-hidden rounded-t-2xl shrink-0 pointer-events-auto"
+            className="hidden min-[1440px]:flex flex-col w-[408px] h-[90vh] overflow-hidden rounded-t-2xl shrink-0 pointer-events-auto"
             style={{ background: '#f9f7f1', boxShadow: '0 -8px 32px rgba(0,0,0,0.10), 0 -2px 8px rgba(0,0,0,0.06)' }}
           >
             <div className="flex justify-center pt-3 pb-1 shrink-0">
@@ -141,7 +141,7 @@ export function CalendarWrapper() {
 
           {/* Event info panel */}
           <div
-            className="w-full max-w-[920px] h-[85vh] overflow-hidden rounded-t-2xl pointer-events-auto"
+            className="w-full max-w-[920px] h-[90vh] overflow-hidden rounded-t-2xl pointer-events-auto"
             style={{ boxShadow: '0 -8px 32px rgba(0,0,0,0.10), 0 -2px 8px rgba(0,0,0,0.06)' }}
           >
             <EventDrawer event={selectedEvent} onClose={handleClose} />
