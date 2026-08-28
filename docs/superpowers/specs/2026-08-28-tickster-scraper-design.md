@@ -188,13 +188,36 @@ later move to Postgres changes only which branch of an existing switch is taken.
 
 ## Open questions
 
-1. Does Tickster mark cancelled events, and how?
-2. Is `price` reachable anywhere without entering the purchase flow?
-3. How many of the four venues' events actually carry `Framträdanden av`? If
-   coverage is poor, title-splitting returns as a real problem.
+**1. Does Tickster mark cancelled events, and how?** — *Answered 2026-08-28: no.*
+Neither the listing page nor either detail fixture contains `Inställt`,
+`cancel`, `avbokad`, or a sold-out marker. Cancellation is not exposed, so no
+event is emitted with `cancelled` status. A cancelled show most likely just
+disappears from the feed.
 
-All three are answerable during implementation of `parse`, against real fixtures,
-and none should block starting.
+**2. Is `price` reachable without entering the purchase flow?** — *Answered
+2026-08-28: no.* No `kr`/`SEK` amount appears anywhere in the listing or detail
+HTML. `Event.price` stays null. Note that the venues' own sites *do* show prices
+(pustervik.nu displays "495 kr"), so price is recoverable later from a
+per-venue source or from the API if it exposes one.
+
+**3. How many events actually carry a lineup?** — Open until the first full run.
+Better than expected structurally: Tickster marks each performer with a
+dedicated `a.performer` link rather than a comma-joined string, so where a
+lineup exists it is unambiguous. Coverage across all four venues is measured in
+Task 9 Step 4.
+
+### Discovered during implementation
+
+**Tag links are not only genres.** `a[href*="/events/tagged/"]` returns the
+venue, the city, and the promoter alongside real genres — for the Atomic Swing
+fixture: `Pustervik`, `Göteborg`, `fkpscorpio`, `Rock`, `Pop`, `Konsert`. There
+is no structural difference between them. The parser excludes the venue and city
+by value, since it already knows both from the listing; promoter tags fall
+through to the run report's unmapped list and are added to an ignore list from
+there.
+
+**Venue labels omit the apostrophe.** Listings render Trädgår'n as `Trädgårn`,
+which the alias list must include.
 
 ## Future
 
